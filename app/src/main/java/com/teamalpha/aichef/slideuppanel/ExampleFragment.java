@@ -11,6 +11,8 @@ import com.teamalpha.aichef.R;
 
 public class ExampleFragment extends Fragment {
 
+    //TODO: Implement 2 fragments, one for each tab.
+
     private String title;
     private int page;
 

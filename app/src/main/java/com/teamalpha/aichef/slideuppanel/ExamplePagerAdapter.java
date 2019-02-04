@@ -31,6 +31,7 @@ public class ExamplePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        return "Page " + position;
+        if (position == 0) return "INGREDIENTS";
+        else return "RECIPES";
     }
 }
