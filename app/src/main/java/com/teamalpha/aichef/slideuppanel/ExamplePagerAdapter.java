@@ -14,11 +14,12 @@ public class ExamplePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public Fragment getItem(int position) {
+        //TODO: Receive ingredient list information from current recipe and iterate over it.
         switch (position) {
             case 0:
-                return ExampleFragment.newInstance("Page # 1", 0);
+                return new IngredientFragment();
             case 1:
-                return ExampleFragment.newInstance("Page # 2", 1);
+                return new IngredientFragment();
             default:
                 return null;
         }
@@ -31,7 +32,6 @@ public class ExamplePagerAdapter extends FragmentPagerAdapter {
 
     @Override
     public CharSequence getPageTitle(int position) {
-        if (position == 0) return "INGREDIENTS";
-        else return "RECIPES";
+        return (position == 0) ? "INGREDIENTS" : "RECIPES";
     }
 }
