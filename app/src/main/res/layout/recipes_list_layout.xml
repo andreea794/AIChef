@@ -7,21 +7,21 @@
     <ImageView
         android:layout_width="70dp"
         android:layout_height="70dp"
-        android:id="@+id/recipe_pic"
+        android:id="@+id/recipeImg"
         android:paddingLeft="10dp"
         />
 
 
     <CheckedTextView
-        android:id="@+id/recipe"
+        android:id="@+id/recipeText"
         android:layout_width="fill_parent"
         android:layout_height="50dp"
+        android:layout_toRightOf="@id/recipeImg"
         android:checked="false"
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
-        android:layout_toRightOf="@id/recipe_pic"
-        android:textColor="#000"
-        android:text="Checked Text View Example" />
+        android:text="Checked Text View Example"
+        android:textColor="#000" />
     <!-- CheckedTextView In Android -->
 
 </RelativeLayout>
