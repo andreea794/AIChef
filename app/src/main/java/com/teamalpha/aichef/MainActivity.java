@@ -6,15 +6,18 @@ import com.android.volley.toolbox.Volley;
 
 import android.os.Bundle;
 
+import api.GetRecipeList;
+
 public class MainActivity extends AppCompatActivity {
-    private static RequestQueue mQueue;
-
-
-    RequestQueue queue = (RequestQueue) Volley.newRequestQueue(this);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        final RequestQueue queue = Volley.newRequestQueue(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        GetRecipeList.setRequestQueue(queue);
+        System.out.println("Set request queue finishes");
+        GetRecipeList.callRecipeListAPI();
+        System.out.println("Get recipe list finishes");
     }
 }
