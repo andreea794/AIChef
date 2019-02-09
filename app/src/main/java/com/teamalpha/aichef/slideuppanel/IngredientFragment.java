@@ -17,14 +17,13 @@ import com.teamalpha.aichef.R;
 
 public class IngredientFragment extends Fragment {
 
-    //If you need to instantiate fragments with arguments, you can add a newInstance() method here
-    //and add them to a Bundle object passed into the setArgs() method of the fragment.
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
 
+
+    //TODO: Initialize to some default empty screen (maybe shopping cart/basket icon?)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,

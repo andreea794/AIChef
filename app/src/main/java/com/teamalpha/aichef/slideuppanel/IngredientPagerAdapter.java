@@ -4,21 +4,22 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
 
-public class ExamplePagerAdapter extends FragmentPagerAdapter {
+public class IngredientPagerAdapter extends FragmentPagerAdapter {
 
     private static int NUM_ITEMS = 2;
 
-    public ExamplePagerAdapter(FragmentManager fm) {
+    public IngredientPagerAdapter(FragmentManager fm) {
         super(fm);
     }
 
     @Override
     public Fragment getItem(int position) {
-        //TODO: Receive ingredient list information from current recipe and iterate over it.
         switch (position) {
             case 0:
                 return new IngredientFragment();
             case 1:
+                //TODO: Implement RecipeFragment and add field in PagerAdapter to toggle between
+                //ingredients and recipes
                 return new IngredientFragment();
             default:
                 return null;

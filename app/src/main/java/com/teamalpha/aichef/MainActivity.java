@@ -6,7 +6,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 
-import com.teamalpha.aichef.slideuppanel.ExamplePagerAdapter;
+import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter adapter;
@@ -17,7 +17,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ViewPager vp = findViewById(R.id.vpPager);
-        adapter = new ExamplePagerAdapter(getSupportFragmentManager());
+        adapter = new IngredientPagerAdapter(getSupportFragmentManager());
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(vp);
         vp.setAdapter(adapter);

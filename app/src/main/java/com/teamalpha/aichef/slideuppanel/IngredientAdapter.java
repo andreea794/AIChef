@@ -17,6 +17,7 @@ public class IngredientAdapter extends RecyclerView.Adapter {
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+        //TODO: Receive ingredient list information from current recipe and iterate over it.
         String msg;
         switch (position) {
             case 0:
