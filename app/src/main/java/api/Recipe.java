@@ -2,7 +2,7 @@ package api;
 
 import java.util.List;
 
-class Recipe {
+public class Recipe {
     final private String recipeName;
     final private String recipeID;
     final private String recipeImageLink;
@@ -39,6 +39,15 @@ class Recipe {
         this.recipeImageLink = image;
         this.usedIngredientCount = Integer.parseInt(count);
         this.ingredients = ingredients;
+    }
+
+    //for testing purpose only
+    public Recipe(String id){
+        this.recipeID = id;
+        this.recipeImageLink = null;
+        this.recipeName = null;
+        this.usedIngredientCount = 0;
+        this.ingredients = null;
     }
 
 }

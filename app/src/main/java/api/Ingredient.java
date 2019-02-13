@@ -1,8 +1,6 @@
 package api;
 
-import java.lang.reflect.Constructor;
-
-class Ingredient {
+public class Ingredient {
     final private String name;
     final private String amount;
     final private String unit;
@@ -28,6 +26,14 @@ class Ingredient {
         this.amount = amount;
         this.unit = unit;
         this.instruction = originalString;
+    }
+
+    //for the sake of testing, have this another constructor
+    public Ingredient(String name){
+        this.name = name;
+        this.amount = null;
+        this.unit = null;
+        this.instruction = null;
     }
 
 }

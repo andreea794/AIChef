@@ -1,12 +1,11 @@
 package api;
 import com.android.volley.AuthFailureError;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
-import com.android.volley.Request;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonArrayRequest;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -18,16 +17,17 @@ import java.util.Map;
 
 public class GetRecipeList {
 //    final TextView mTextView = (TextView) findViewById(R.id.text);
-    private static RequestQueue mQueue;
+//    private static RequestQueue mQueue;
     private static JSONArray responseArr;
-    public static List<Recipe> mRecipeList;
+    private static List<Recipe> mRecipeList = new ArrayList<>();
 
-    private final static String url ="https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=5&ranking=1&ingredients=apples%2Cflour%2Csugar";
-// ...
-    //only get the JSON response in this part and deal with it in the main activity
-    public static void setRequestQueue(RequestQueue queue){
-        mQueue = queue;
-    }
+    private final static String url ="https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=15&ranking=1&ingredients=";
+    //this is the base url
+
+//    //only get the JSON response in this part and deal with it in the main activity
+//    public static void setRequestQueue(RequestQueue queue){
+//        mQueue = queue;
+//    }
 
     //---------GET RECIPE LIST TO THE FRONT UI------------------//
     public static List<Recipe> getRecipeList(){
@@ -35,8 +35,15 @@ public class GetRecipeList {
     }
 
     //---------POPULATE THE RECIPE LIST WITH INFORMATION FROM JSON RESPONSE----------------------//
-    public static void callRecipeListAPI() {
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, url, null,
+    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue) {
+        //need to have some way to pass the name from the scannedIngredients to the url
+        String curURL = url;
+        for(int i=0; i<scannedIngredients.size(); i++){
+            if (i!= scannedIngredients.size()-1) curURL = curURL + scannedIngredients.get(i).getName() + "%2C";
+            else curURL = curURL + scannedIngredients.get(i).getName();
+        }
+        System.out.println(curURL);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, curURL, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
@@ -49,7 +56,12 @@ public class GetRecipeList {
                             try {
 //                                System.out.println(responseArr.getJSONObject(index).getString("id"));
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
-                                List<Ingredient> curIgds = new ArrayList<>();
+//                                System.out.println(curRJObj.toString());
+                                System.out.println("Recipe ID: " + curRJObj.get("id") + ", Recipe Name: " + curRJObj.get("title"));
+                                List<Ingredient> curIgds = new ArrayList<>();//initialise an empty list to input ingredients so that can add ingredients
+//                                System.out.println(curRJObj.getString("title"));
+//                                System.out.println(curRJObj.getString("id"));
+//                                System.out.println(curRJObj.getString("image"));
                                 Recipe curRecipe = new Recipe(curRJObj.getString("title"), curRJObj.getString("id"), curRJObj.getString("image"),
                                         curRJObj.getString("usedIngredientCount"), curIgds);
                                 mRecipeList.add(curRecipe);
