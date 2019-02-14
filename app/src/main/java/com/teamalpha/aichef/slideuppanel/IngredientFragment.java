@@ -33,7 +33,7 @@ public class IngredientFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView recyclerView = view.findViewById(R.id.rv_ingredients_frag);
         recyclerView.setLayoutManager(layoutManager);
-        IngredientAdapter adapter = new IngredientAdapter();
+        IngredientAdapter adapter = new IngredientAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
         return view;

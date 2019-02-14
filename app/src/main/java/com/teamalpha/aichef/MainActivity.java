@@ -11,13 +11,22 @@ import android.widget.Toast;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class MainActivity extends AppCompatActivity {
-    FragmentPagerAdapter adapter;
+    FragmentPagerAdapter mAdapter;
+    List<String> mScannedIngredients;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        mScannedIngredients = new ArrayList<>();
+        mScannedIngredients.add("Broccoli");
+        mScannedIngredients.add("Tomato");
+        mScannedIngredients.add("Onion");
 
         //TODO: Save the scanned ingredients state when you transition to other activity.
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.layout_slidinguppanel);
@@ -25,10 +34,20 @@ public class MainActivity extends AppCompatActivity {
 
 
         ViewPager vp = findViewById(R.id.vpPager);
-        adapter = new IngredientPagerAdapter(getSupportFragmentManager());
+        mAdapter = new IngredientPagerAdapter(getSupportFragmentManager());
         TabLayout tabLayout = findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(vp);
-        vp.setAdapter(adapter);
+        vp.setAdapter(mAdapter);
+    }
+
+
+    public List<String> getScannedIngredients() {
+        List<String> ingredients = new ArrayList<>(mScannedIngredients);
+        return ingredients;
+    }
+
+    public void removeIngredient(String ingredient) {
+        mScannedIngredients.remove(ingredient);
     }
 
     /**
