@@ -1,4 +1,5 @@
 package api;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -16,12 +17,10 @@ import java.util.List;
 import java.util.Map;
 
 public class GetRecipeList {
-//    final TextView mTextView = (TextView) findViewById(R.id.text);
-//    private static RequestQueue mQueue;
     private static JSONArray responseArr;
-    private static List<Recipe> mRecipeList = new ArrayList<>();
 
-    private final static String url ="https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=15&ranking=1&ingredients=";
+
+    private final static String url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/findByIngredients?number=15&ranking=1&ingredients=";
     //this is the base url
 
 //    //only get the JSON response in this part and deal with it in the main activity
@@ -29,17 +28,16 @@ public class GetRecipeList {
 //        mQueue = queue;
 //    }
 
-    //---------GET RECIPE LIST TO THE FRONT UI------------------//
-    public static List<Recipe> getRecipeList(){
-        return mRecipeList;
-    }
-
     //---------POPULATE THE RECIPE LIST WITH INFORMATION FROM JSON RESPONSE----------------------//
-    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue) {
+    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue, final List<Recipe> list) {
         //need to have some way to pass the name from the scannedIngredients to the url
+        final List<Recipe> mRecipeList = new ArrayList<>();
+
         String curURL = url;
-        for(int i=0; i<scannedIngredients.size(); i++){
-            if (i!= scannedIngredients.size()-1) curURL = curURL + scannedIngredients.get(i).getName() + "%2C";
+
+        for (int i = 0; i < scannedIngredients.size(); i++) {
+            if (i != scannedIngredients.size() - 1)
+                curURL = curURL + scannedIngredients.get(i).getName() + "%2C";
             else curURL = curURL + scannedIngredients.get(i).getName();
         }
         System.out.println(curURL);
@@ -50,6 +48,7 @@ public class GetRecipeList {
 
                         responseArr = response;
 
+
                         int index;
                         for (index = 0; index < responseArr.length(); index++) {
 
@@ -57,7 +56,7 @@ public class GetRecipeList {
 //                                System.out.println(responseArr.getJSONObject(index).getString("id"));
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
 //                                System.out.println(curRJObj.toString());
-                                System.out.println("Recipe ID: " + curRJObj.get("id") + ", Recipe Name: " + curRJObj.get("title"));
+//                                System.out.println("Recipe ID: " + curRJObj.get("id") + ", Recipe Name: " + curRJObj.get("title"));
                                 List<Ingredient> curIgds = new ArrayList<>();//initialise an empty list to input ingredients so that can add ingredients
 //                                System.out.println(curRJObj.getString("title"));
 //                                System.out.println(curRJObj.getString("id"));
@@ -71,6 +70,10 @@ public class GetRecipeList {
                             }
 
                         }
+
+                        //Clear the recipe list in MainActivity and fill up with the newly retrieved recipes.
+                        list.clear();
+                        list.addAll(mRecipeList);
                     }
                 },
 

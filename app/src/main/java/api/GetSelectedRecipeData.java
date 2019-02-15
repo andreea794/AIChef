@@ -21,7 +21,6 @@ import java.util.Map;
 public class GetSelectedRecipeData {
 
     private static List<Recipe> mSelectedRecipes;
-    private static List<Ingredient> mShoppingList;
     private static JSONObject responseObj;
 
     private static String url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/<recipeID>/information";
@@ -29,11 +28,13 @@ public class GetSelectedRecipeData {
 //    public static  getShoppingList(){ return mShoppingList; }
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
-    public static List<Ingredient> callIngredientsListAPI(Recipe selectedRecipe, RequestQueue mQueue){
+    public static List<Ingredient> callIngredientsListAPI(Recipe selectedRecipe, RequestQueue mQueue) {
         String id = selectedRecipe.getRecipeID();
         String curURL = url.replaceAll("<recipeID>", id);
 
         System.out.println(curURL);
+
+        final List<Ingredient> mShoppingList = new ArrayList<>();
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, curURL, null,
                 new Response.Listener<JSONObject>() {
@@ -41,13 +42,12 @@ public class GetSelectedRecipeData {
                     @Override
                     public void onResponse(JSONObject response) {
                         responseObj = response;
-                        mShoppingList =  new ArrayList<>();
                         JSONArray curIngdList = null;
                         try {
                             curIngdList = (JSONArray) responseObj.get("extendedIngredients");
-                            System.out.println("Number of ingredients in the current Recipe: "+ curIngdList.length());
-                            for(int c=0; c<curIngdList.length(); c++){
-                                String curIngdName = (String)curIngdList.getJSONObject(c).get("name");
+                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
+                            for (int c = 0; c < curIngdList.length(); c++) {
+                                String curIngdName = (String) curIngdList.getJSONObject(c).get("name");
                                 Ingredient newIngredient = new Ingredient(curIngdName);
                                 System.out.println(newIngredient.getName());
                                 mShoppingList.add(newIngredient);
@@ -66,7 +66,7 @@ public class GetSelectedRecipeData {
                     public void onErrorResponse(VolleyError error) {
                         System.out.println(error.toString());
                     }
-                }){
+                }) {
 
             // Passing some request headers
 
@@ -83,14 +83,5 @@ public class GetSelectedRecipeData {
         return mShoppingList;
 
     }
-
-//    public List<Ingredient> getShoppingList(List<Recipe> selectedRecipesFromUser){
-//        mSelectedRecipes = selectedRecipesFromUser;
-//
-//        for (int i=0; i<mSelectedRecipes.size(); i++){
-//
-//        }
-//
-//    }
 
 }
