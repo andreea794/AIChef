@@ -8,4 +8,6 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="TabAppTheme" parent="Theme.AppCompat.Light.DarkActionBar"/>
+
 </resources>
