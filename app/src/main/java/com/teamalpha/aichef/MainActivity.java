@@ -1,32 +1,28 @@
 package com.teamalpha.aichef;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
-
-import android.support.v7.app.AppCompatActivity;
-
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.Volley;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import api.GetRecipeList;
-import api.GetSelectedRecipeData;
-import api.Ingredient;
-import api.Recipe;
-
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Button;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonArrayRequest;
+import com.android.volley.toolbox.Volley;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import api.GetRecipeList;
+import api.Ingredient;
+import api.Recipe;
 
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter mAdapter;
@@ -39,6 +35,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         final RequestQueue queue = Volley.newRequestQueue(this);
+        queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
         setContentView(R.layout.activity_main);
 //        GetRecipeList.setRequestQueue(queue);
         System.out.println("Set request queue finishes");
@@ -47,23 +44,10 @@ public class MainActivity extends AppCompatActivity {
         ////////////FOR TESTING//////////////////
         Ingredient broccoli = new Ingredient("broccoli");
         Ingredient potato = new Ingredient("potato");
-        List<Ingredient> inputList = new ArrayList<>();
-        inputList.add(broccoli);
-        inputList.add(potato);
+        scannedIngredients.add(broccoli);
+        scannedIngredients.add(potato);
         //////////////////////////////////////////
-//
-        GetRecipeList.callRecipeListAPI(inputList, queue, recipeList);
-        System.out.println("Get recipe list finishes");
-        System.out.println(recipeList.size());
-        Recipe curRecipe;
 
-        //TODO: Use AsyncTask to create callback mechanism for the network call.
-
-        for (int i = 0; i < recipeList.size(); i++) {
-            curRecipe = recipeList.get(i);
-            System.out.println(curRecipe.getRecipeID() + " " + curRecipe.getRecipeName()
-                    + " " + curRecipe.getUsedIngredientCount() + " " + curRecipe.getRecipeImageLink());
-        }
         ////////////FOR TESTING//////////////////
         Recipe r1 = new Recipe("592735");
         Recipe r2 = new Recipe("109376");
@@ -109,6 +93,20 @@ public class MainActivity extends AppCompatActivity {
 
     public void removeIngredient(String ingredient) {
         mScannedIngredients.remove(ingredient);
+    }
+
+    private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest> {
+        @Override
+        public void onRequestFinished(Request<JsonArrayRequest> request) {
+            System.out.println("BREAKPOINT 3");
+            Recipe curRecipe;
+            for (int i = 0; i < recipeList.size(); i++) {
+                curRecipe = recipeList.get(i);
+                System.out.println(curRecipe.getRecipeID() + " " + curRecipe.getRecipeName()
+                        + " " + curRecipe.getUsedIngredientCount() + " " + curRecipe.getRecipeImageLink());
+            }
+            System.out.println("Recipe list size: " + recipeList.size());
+        }
     }
 
     /**

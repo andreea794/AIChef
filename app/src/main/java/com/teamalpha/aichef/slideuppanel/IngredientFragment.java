@@ -12,6 +12,8 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.teamalpha.aichef.R;
 
@@ -36,6 +38,14 @@ public class IngredientFragment extends Fragment {
         IngredientAdapter adapter = new IngredientAdapter(getActivity());
         recyclerView.setAdapter(adapter);
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+        Button apiCallButton = view.findViewById(R.id.button_get_recipe);
+        apiCallButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO: find a way to pass the scanned ingredient list, recipes list, and request queue from MainActivity
+                Toast.makeText(getContext(), "HELLO", Toast.LENGTH_SHORT).show();
+            }
+        });
         return view;
     }
 

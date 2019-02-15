@@ -29,7 +29,7 @@ public class GetRecipeList {
 //    }
 
     //---------POPULATE THE RECIPE LIST WITH INFORMATION FROM JSON RESPONSE----------------------//
-    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue, final List<Recipe> list) {
+    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList) {
         //need to have some way to pass the name from the scannedIngredients to the url
         final List<Recipe> mRecipeList = new ArrayList<>();
 
@@ -47,16 +47,14 @@ public class GetRecipeList {
                     public void onResponse(JSONArray response) {
 
                         responseArr = response;
-
+                        System.out.println("BREAKPOINT 2");
 
                         int index;
                         for (index = 0; index < responseArr.length(); index++) {
-
                             try {
 //                                System.out.println(responseArr.getJSONObject(index).getString("id"));
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
 //                                System.out.println(curRJObj.toString());
-//                                System.out.println("Recipe ID: " + curRJObj.get("id") + ", Recipe Name: " + curRJObj.get("title"));
                                 List<Ingredient> curIgds = new ArrayList<>();//initialise an empty list to input ingredients so that can add ingredients
 //                                System.out.println(curRJObj.getString("title"));
 //                                System.out.println(curRJObj.getString("id"));
@@ -71,9 +69,11 @@ public class GetRecipeList {
 
                         }
 
-                        //Clear the recipe list in MainActivity and fill up with the newly retrieved recipes.
-                        list.clear();
-                        list.addAll(mRecipeList);
+                        //Modifying MainActiviy's recipe list.
+                        recipeList.clear();
+                        recipeList.addAll(mRecipeList);
+                        System.out.println("Recipe List Size in the onResponse: " + mRecipeList.size());
+
                     }
                 },
 
