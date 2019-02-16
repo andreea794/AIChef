@@ -1,13 +1,11 @@
 package com.teamalpha.aichef;
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -20,7 +18,6 @@ import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 import java.util.ArrayList;
 import java.util.List;
 
-import api.GetRecipeList;
 import api.Ingredient;
 import api.Recipe;
 
