@@ -18,9 +18,7 @@ public class IngredientPagerAdapter extends FragmentPagerAdapter {
             case 0:
                 return new IngredientFragment();
             case 1:
-                //TODO: Implement RecipeFragment and add field in PagerAdapter to toggle between
-                //ingredients and recipes
-                return new IngredientFragment();
+                return new RecipeFragment();
             default:
                 return null;
         }

@@ -1,20 +1,21 @@
 package com.teamalpha.aichef.slideuppanel;
 
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.teamalpha.aichef.MainActivity;
 import com.teamalpha.aichef.R;
 
 public class IngredientFragment extends Fragment {
@@ -25,7 +26,6 @@ public class IngredientFragment extends Fragment {
     }
 
 
-    //TODO: Initialize to some default empty screen (maybe shopping cart/basket icon?)
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater,
@@ -35,14 +35,17 @@ public class IngredientFragment extends Fragment {
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView recyclerView = view.findViewById(R.id.rv_ingredients_frag);
         recyclerView.setLayoutManager(layoutManager);
+
         IngredientAdapter adapter = new IngredientAdapter(getActivity());
         recyclerView.setAdapter(adapter);
+
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
         Button apiCallButton = view.findViewById(R.id.button_get_recipe);
         apiCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                //TODO: find a way to pass the scanned ingredient list, recipes list, and request queue from MainActivity
+                //TODO: Track the recipe list in the RecipeFragment, but access it here.
                 Toast.makeText(getContext(), "HELLO", Toast.LENGTH_SHORT).show();
             }
         });
@@ -51,31 +54,52 @@ public class IngredientFragment extends Fragment {
 
 
     /**
-     * Simple class to define the recycler view dividers.
+     * Simple RecyclerView adapter for the Ingredient fragment
      */
-    public class SimpleDividerItemDecoration extends RecyclerView.ItemDecoration {
-        private Drawable mDivider;
+    private class IngredientAdapter extends RecyclerView.Adapter {
 
-        public SimpleDividerItemDecoration(Context context) {
-            mDivider = ContextCompat.getDrawable(getContext(), R.drawable.line_divider);
+        MainActivity mainActivity;
+
+        public IngredientAdapter(Context context) {
+            mainActivity = (MainActivity) context;
+        }
+
+
+        @Override
+        public IngredientViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+            View ingredientView = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.list_item_ingredient, parent, false);
+            return new IngredientViewHolder(ingredientView);
         }
 
         @Override
-        public void onDrawOver(Canvas c, RecyclerView parent, RecyclerView.State state) {
-            int left = parent.getPaddingLeft() + 50;
-            int right = parent.getWidth() - parent.getPaddingRight() - 50;
+        public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+            final String msg = mainActivity.getScannedIngredients().get(position);
+            ((IngredientViewHolder) holder).mTextView.setText(msg);
+            ((IngredientViewHolder) holder).mImageView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    mainActivity.removeIngredient(msg);
+                    IngredientAdapter.this.notifyDataSetChanged();
+                }
+            });
+        }
 
-            int childCount = parent.getChildCount();
-            for (int i = 0; i < childCount; i++) {
-                View child = parent.getChildAt(i);
+        @Override
+        public int getItemCount() {
+            return mainActivity.getScannedIngredients().size();
+        }
 
-                RecyclerView.LayoutParams params = (RecyclerView.LayoutParams) child.getLayoutParams();
+        private class IngredientViewHolder extends RecyclerView.ViewHolder {
 
-                int top = child.getBottom() + params.bottomMargin;
-                int bottom = top + mDivider.getIntrinsicHeight();
+            TextView mTextView;
+            ImageView mImageView;
 
-                mDivider.setBounds(left, top, right, bottom);
-                mDivider.draw(c);
+            public IngredientViewHolder(View itemView) {
+                super(itemView);
+                LinearLayout layout = (LinearLayout) itemView;
+                mTextView = layout.findViewById(R.id.tv_ingredient_name);
+                mImageView = layout.findViewById(R.id.iv_remove_ingredient);
             }
         }
     }

@@ -28,7 +28,13 @@ public class GetRecipeList {
 //        mQueue = queue;
 //    }
 
-    //---------POPULATE THE RECIPE LIST WITH INFORMATION FROM JSON RESPONSE----------------------//
+    /**
+     * Populate the recipe list with information in the JSON response.
+     *
+     * @param scannedIngredients the ingredient parameters used in the API query
+     * @param mQueue             the RequestQueue of the calling Context
+     * @param recipeList         the recipe list to be populated with recipe data managed by the calling context
+     */
     public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList) {
         //need to have some way to pass the name from the scannedIngredients to the url
         final List<Recipe> mRecipeList = new ArrayList<>();
