@@ -23,10 +23,15 @@ import api.Recipe;
 
 public class MainActivity extends AppCompatActivity {
     FragmentPagerAdapter mAdapter;
-    List<String> mScannedIngredients;
+    static ViewPager mViewPager;
 
+    //TODO: Remove all code relating to scanned ingredient list and recipe list from MainActivity.
     List<Ingredient> scannedIngredients = new ArrayList<>();
     List<Recipe> recipeList = new ArrayList<>();
+
+    public static void moveSlideUpPanel(int position) {
+        mViewPager.setCurrentItem(position);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,33 +70,20 @@ public class MainActivity extends AppCompatActivity {
 //                System.out.println(curlist.get(i).getName());
 //            }
 
-        mScannedIngredients = new ArrayList<>();
-        mScannedIngredients.add("Broccoli");
-        mScannedIngredients.add("Tomato");
-        mScannedIngredients.add("Onion");
-
-        //TODO: Save the scanned ingredients state when you transition to other activity.
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.layout_slidinguppanel);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelListener());
 
-
-        ViewPager vp = findViewById(R.id.vpPager);
+        mViewPager = findViewById(R.id.vpPager);
         mAdapter = new IngredientPagerAdapter(getSupportFragmentManager());
         TabLayout tabLayout = findViewById(R.id.tab_layout);
-        tabLayout.setupWithViewPager(vp);
-        vp.setAdapter(mAdapter);
+        tabLayout.setupWithViewPager(mViewPager);
+        mViewPager.setAdapter(mAdapter);
     }
 
-
-    public List<String> getScannedIngredients() {
-        List<String> ingredients = new ArrayList<>(mScannedIngredients);
-        return ingredients;
-    }
-
-    public void removeIngredient(String ingredient) {
-        mScannedIngredients.remove(ingredient);
-    }
-
+    /**
+     * Simple RequestFinishedListener callback for when the recipe api call returns.
+     * Currently only used for testing.
+     */
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest> {
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request) {

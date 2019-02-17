@@ -75,7 +75,8 @@ public class GetRecipeList {
 
                         }
 
-                        //Modifying MainActiviy's recipe list.
+                        //First clear the contents of RecipeFragments' recipe list, and then fill it up
+                        //with the new recipes.
                         recipeList.clear();
                         recipeList.addAll(mRecipeList);
                         System.out.println("Recipe List Size in the onResponse: " + mRecipeList.size());

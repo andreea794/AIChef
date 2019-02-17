@@ -20,13 +20,17 @@ import api.Recipe;
 
 public class RecipeFragment extends Fragment {
 
-    //TODO: Export this field to IngredientFragment
-    private List<Recipe> recipes;
+    static List<Recipe> recipes;
+    static RecipeAdapter adapter;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipes = new ArrayList<>();
+    }
+
+    public static void refresh() {
+        adapter.notifyDataSetChanged();
     }
 
     @Nullable
@@ -37,7 +41,7 @@ public class RecipeFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
         recyclerView.setLayoutManager(layoutManager);
 
-        RecipeAdapter adapter = new RecipeAdapter();
+        adapter = new RecipeAdapter();
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
@@ -68,7 +72,7 @@ public class RecipeFragment extends Fragment {
 
             TextView mTextView;
 
-            public RecipeViewHolder(View itemView) {
+            RecipeViewHolder(View itemView) {
                 super(itemView);
                 mTextView = (TextView) itemView;
             }
