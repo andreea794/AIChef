@@ -35,16 +35,20 @@ public class GetSelectedRecipeData {
 
             String id = selectedRecipes.get(i).getRecipeID();
             String curURL = url.replaceAll("<recipeID>", id);
+            final Recipe curRecipe = selectedRecipes.get(i);
 
             JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, curURL, null,
                     new Response.Listener<JSONObject>() {
 
                         @Override
                         public void onResponse(JSONObject response) {
-                            System.out.println("BREAKPOINT 1");
+//                            System.out.println("BREAKPOINT 1");
                             responseObj = response;
+                            System.out.println(response.toString());
                             JSONArray curIngdList = null;
                             try {
+                                curRecipe.setRecipeURL(responseObj.getString("sourceUrl"));
+                                System.out.println(curRecipe.getRecipeURL());
                                 curIngdList = (JSONArray) responseObj.get("extendedIngredients");
 //                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
                                 for (int c = 0; c < curIngdList.length(); c++) {

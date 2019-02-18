@@ -29,7 +29,8 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Remove all code relating to scanned ingredient list and recipe list from MainActivity.
     List<Ingredient> scannedIngredients = new ArrayList<>();
     List<Recipe> recipeList = new ArrayList<>();
-    static List<Ingredient> shoppingList = new ArrayList<>();
+    List<Ingredient> shoppingList = new ArrayList<>();
+    List<Recipe> selectedRecipes = new ArrayList<>();
 
     public static void moveSlideUpPanel(int position) {
         mViewPager.setCurrentItem(position);
@@ -55,12 +56,11 @@ public class MainActivity extends AppCompatActivity {
         Recipe r1 = new Recipe("592735");
         Recipe r2 = new Recipe("109376");
         Recipe r3 = new Recipe("1062408");
-        List<Recipe> selectedRecipes = new ArrayList<>();
         selectedRecipes.add(r1);
         selectedRecipes.add(r2);
         selectedRecipes.add(r3);
         /////////////////////////////////////////
-
+//        GetRecipeList.callRecipeListAPI(scannedIngredients, queue, recipeList);
         GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes, queue, shoppingList);
 
 
@@ -99,11 +99,16 @@ public class MainActivity extends AppCompatActivity {
 //                        + " " + curRecipe.getUsedIngredientCount() + " " + curRecipe.getRecipeImageLink());
 //            }
 //            System.out.println("Recipe list size: " + recipeList.size());
-            System.out.println("BREAKPOINT 2");
+//            System.out.println("BREAKPOINT 2");
             System.out.println("Current ingredient list:");
             System.out.println("Shopping List size: " + shoppingList.size());
             for(int i = 0; i< shoppingList.size(); i++){
                 System.out.println(shoppingList.get(i).getName());
+            }
+
+            System.out.println("The urls for the selected recipes:");
+            for(int j = 0; j < selectedRecipes.size(); j++){
+                System.out.println("Recipe " + (j+1) + "'s URL is: " + selectedRecipes.get(j).getRecipeURL());
             }
 
 

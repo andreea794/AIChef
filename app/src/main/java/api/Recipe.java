@@ -1,13 +1,13 @@
 package api;
 
-import java.util.List;
-
 public class Recipe {
     final private String recipeName;
     final private String recipeID;
     final private String recipeImageLink;
-    final private int usedIngredientCount;
-    final private List<Ingredient> ingredients;
+    //cant make recipe webpage url final as it has to be set in the later stage
+    private String recipeURL;
+    //final private List<Ingredient> ingredients;
+
 
     //-------------GETTERS-----------//
     public String getRecipeName(){
@@ -18,27 +18,28 @@ public class Recipe {
         return recipeID;
     }
 
+    public String getRecipeURL(){
+        return recipeURL;
+    }
+
+    public void setRecipeURL(String url){ recipeURL = url;}
+
     public String getRecipeImageLink(){
         return recipeImageLink;
     }
 
-    public int getUsedIngredientCount(){
-        return usedIngredientCount;
-    }
 
-
-    public List<Ingredient> getIngredients(){
-        return ingredients;
-    }
+//    public List<Ingredient> getIngredients(){
+//        return ingredients;
+//    }
 
 
     //-------------SETTERS----------------//
-    public Recipe(String name, String id, String image, String count, List<Ingredient> ingredients){
+    public Recipe(String name, String id, String image){
         this.recipeName = name;
         this.recipeID = id;
         this.recipeImageLink = image;
-        this.usedIngredientCount = Integer.parseInt(count);
-        this.ingredients = ingredients;
+        //this.ingredients = ingredients;
     }
 
     //for testing purpose only
@@ -46,8 +47,8 @@ public class Recipe {
         this.recipeID = id;
         this.recipeImageLink = null;
         this.recipeName = null;
-        this.usedIngredientCount = 0;
-        this.ingredients = null;
+        this.recipeURL = null;
+        //this.ingredients = null;
     }
 
 }
