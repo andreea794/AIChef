@@ -1,6 +1,9 @@
 package api;
 
-public class Recipe {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Recipe implements Parcelable {
     final private String recipeName;
     final private String recipeID;
     final private String recipeImageLink;
@@ -51,4 +54,36 @@ public class Recipe {
         //this.ingredients = null;
     }
 
+    public static final Parcelable.Creator<Recipe> CREATOR = new Parcelable.Creator<Recipe>() {
+
+        @Override
+        public Recipe createFromParcel(Parcel parcel) {
+            return new Recipe(parcel);
+        }
+
+        @Override
+        public Recipe[] newArray(int i) {
+            return new Recipe[0];
+        }
+    };
+
+    private Recipe(Parcel parcel) {
+        recipeName = parcel.readString();
+        recipeID = parcel.readString();
+        recipeImageLink = parcel.readString();
+        recipeURL = parcel.readString();
+    }
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(recipeName);
+        parcel.writeString(recipeID);
+        parcel.writeString(recipeImageLink);
+        parcel.writeString(recipeURL);
+    }
 }
