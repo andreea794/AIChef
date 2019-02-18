@@ -14,10 +14,20 @@
         android:background="@android:drawable/bottom_bar">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/recipesListButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Pause" />
+            android:layout_gravity="end"
+            android:text="@string/recipes_list" />
+
+        <Button
+            android:id="@+id/shoppingListButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/shopping_list"
+            android:textSize="14sp" />
     </FrameLayout>
 
     <FrameLayout

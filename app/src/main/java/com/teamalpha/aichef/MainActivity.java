@@ -2,6 +2,7 @@ package com.teamalpha.aichef;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.Snackbar;
@@ -22,7 +23,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     private FrameLayout mCamFrame = null;
     private static final int CAMERA_REQUEST_ID = 1;
 
-    private Button b;
+    private Button shoppingListButton;
+    private Button recipesListButton;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -30,14 +32,54 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        searchView = findViewById(R.id.searchView);
         mCamFrame = findViewById(R.id.camFrame);
 
-        b = findViewById(R.id.button);
-        b.setOnClickListener(new View.OnClickListener() {
+        searchView = findViewById(R.id.searchView);
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                // Check format of query string and send it to
+                // image classifier to check against vegetable classes
+                if (!query.matches("[a-zA-Z\\s]+")) {
+                    // Wrong format of input query
+                    Snackbar wrongFormat = Snackbar.make(
+                            mCamFrame,
+                            "An ingredient should only contain letters and whitespaces.",
+                            Snackbar.LENGTH_LONG);
+                    wrongFormat.getView().setBackgroundColor(Color.RED);
+                    wrongFormat.show();
+                    searchView.setQuery("",false);
+                    searchView.clearFocus();
+                }
+                else {
+                    // Make input all lowercase and replace whitespace with underline
+                    query = query.toLowerCase().replaceAll("\\s+", "_");
+                    /* TODO: Send query to back end.*/
+                }
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                // Don't want to do anything on text change
+                return false;
+            }
+        });
+
+        shoppingListButton = findViewById(R.id.shoppingListButton);
+        shoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 pauseOrResumeCamera();
+                /* TODO: get rid and implement functionality. */
+            }
+        });
+
+        recipesListButton = findViewById(R.id.recipesListButton);
+        recipesListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /* TODO: implement functionality. */
             }
         });
 
