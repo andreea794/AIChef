@@ -14,8 +14,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 //front end need to check whether the list mRecipe is empty: if it is, show prompt for the users to select from the suggested recipes
 public class GetSelectedRecipeData {
@@ -28,7 +30,7 @@ public class GetSelectedRecipeData {
 //    public static  getShoppingList(){ return mShoppingList; }
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
-    public static List<Ingredient> callIngredientsListAPI(Recipe selectedRecipe, RequestQueue mQueue) {
+    private static List<Ingredient> callIngredientsListAPI(Recipe selectedRecipe, RequestQueue mQueue) {
         String id = selectedRecipe.getRecipeID();
         String curURL = url.replaceAll("<recipeID>", id);
 
@@ -81,6 +83,20 @@ public class GetSelectedRecipeData {
 
         mQueue.add(request);
         return mShoppingList;
+
+    }
+
+    public static void getAllIngredients(List<Recipe> recipes, RequestQueue queue, final List<Ingredient> shoppingList){
+
+        Set<Ingredient> allIngredients = new HashSet<>();
+
+        for(int i=0; i<recipes.size(); i++){
+            allIngredients.addAll(callIngredientsListAPI(recipes.get(i), queue));
+        }
+
+        List<Ingredient> rt = new ArrayList<>(allIngredients);
+        shoppingList.clear();
+        shoppingList.addAll(rt);
 
     }
 
