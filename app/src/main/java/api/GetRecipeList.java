@@ -58,13 +58,8 @@ public class GetRecipeList {
                         int index;
                         for (index = 0; index < responseArr.length(); index++) {
                             try {
-//                                System.out.println(responseArr.getJSONObject(index).getString("id"));
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
-//                                System.out.println(curRJObj.toString());
                                 List<Ingredient> curIgds = new ArrayList<>();//initialise an empty list to input ingredients so that can add ingredients
-//                                System.out.println(curRJObj.getString("title"));
-//                                System.out.println(curRJObj.getString("id"));
-//                                System.out.println(curRJObj.getString("image"));
                                 Recipe curRecipe = new Recipe(curRJObj.getString("title"), curRJObj.getString("id"), curRJObj.getString("image"),
                                         curRJObj.getString("usedIngredientCount"), curIgds);
                                 mRecipeList.add(curRecipe);

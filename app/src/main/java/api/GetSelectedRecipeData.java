@@ -12,7 +12,6 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -21,83 +20,76 @@ import java.util.Set;
 
 //front end need to check whether the list mRecipe is empty: if it is, show prompt for the users to select from the suggested recipes
 public class GetSelectedRecipeData {
-
-    private static List<Recipe> mSelectedRecipes;
+    private static int counter = 0;
     private static JSONObject responseObj;
 
     private static String url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/<recipeID>/information";
 
-//    public static  getShoppingList(){ return mShoppingList; }
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
-    private static List<Ingredient> callIngredientsListAPI(Recipe selectedRecipe, RequestQueue mQueue) {
-        String id = selectedRecipe.getRecipeID();
-        String curURL = url.replaceAll("<recipeID>", id);
+    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<Ingredient> shoppingList) {
 
-        System.out.println(curURL);
+        final Set<Ingredient> allIngredients = new HashSet<>();
 
-        final List<Ingredient> mShoppingList = new ArrayList<>();
+        for(int i=0; i<selectedRecipes.size(); i++) {
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, curURL, null,
-                new Response.Listener<JSONObject>() {
+            String id = selectedRecipes.get(i).getRecipeID();
+            String curURL = url.replaceAll("<recipeID>", id);
 
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        responseObj = response;
-                        JSONArray curIngdList = null;
-                        try {
-                            curIngdList = (JSONArray) responseObj.get("extendedIngredients");
-                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
-                            for (int c = 0; c < curIngdList.length(); c++) {
-                                String curIngdName = (String) curIngdList.getJSONObject(c).get("name");
-                                Ingredient newIngredient = new Ingredient(curIngdName);
-                                System.out.println(newIngredient.getName());
-                                mShoppingList.add(newIngredient);
+            JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, curURL, null,
+                    new Response.Listener<JSONObject>() {
+
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println("BREAKPOINT 1");
+                            responseObj = response;
+                            JSONArray curIngdList = null;
+                            try {
+                                curIngdList = (JSONArray) responseObj.get("extendedIngredients");
+//                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
+                                for (int c = 0; c < curIngdList.length(); c++) {
+                                    String curIngdName = (String) curIngdList.getJSONObject(c).get("name");
+                                    Ingredient newIngredient = new Ingredient(curIngdName);
+//                                    System.out.println(newIngredient.getName());
+                                    allIngredients.add(newIngredient);
+//                                    System.out.println(allIngredients.size());
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+                            //check whether it's the last api call
+                            counter ++;
+                            if(counter == 0) shoppingList.clear();
+                            else if(counter == selectedRecipes.size()) {
+                                shoppingList.addAll(allIngredients);
+//                                System.out.println("ShoppingList Size after reaching the last : " + allIngredients.size());
                             }
 
-                        } catch (JSONException e) {
-                            e.printStackTrace();
                         }
 
-                    }
+                    },
 
-                },
+                    new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            System.out.println(error.toString());
+                        }
+                    }) {
 
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println(error.toString());
-                    }
-                }) {
+                // Passing some request headers
 
-            // Passing some request headers
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    HashMap<String, String> headers = new HashMap<String, String>();
+                    //headers.put("Content-Type", "application/json");
+                    headers.put("X-RapidAPI-Key", "d5b6945f4amshcf5e58babc52c8cp1930c0jsn329275235e32");
+                    return headers;
+                }
+            };
 
-            @Override
-            public Map<String, String> getHeaders() throws AuthFailureError {
-                HashMap<String, String> headers = new HashMap<String, String>();
-                //headers.put("Content-Type", "application/json");
-                headers.put("X-RapidAPI-Key", "d5b6945f4amshcf5e58babc52c8cp1930c0jsn329275235e32");
-                return headers;
-            }
-        };
-
-        mQueue.add(request);
-        return mShoppingList;
-
-    }
-
-    public static void getAllIngredients(List<Recipe> recipes, RequestQueue queue, final List<Ingredient> shoppingList){
-
-        Set<Ingredient> allIngredients = new HashSet<>();
-
-        for(int i=0; i<recipes.size(); i++){
-            allIngredients.addAll(callIngredientsListAPI(recipes.get(i), queue));
+            //a request need to be sent for every for-loop
+            queue.add(request);
         }
 
-        List<Ingredient> rt = new ArrayList<>(allIngredients);
-        shoppingList.clear();
-        shoppingList.addAll(rt);
-
     }
-
 }

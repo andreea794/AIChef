@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
     //TODO: Remove all code relating to scanned ingredient list and recipe list from MainActivity.
     List<Ingredient> scannedIngredients = new ArrayList<>();
     List<Recipe> recipeList = new ArrayList<>();
+    static List<Ingredient> shoppingList = new ArrayList<>();
 
     public static void moveSlideUpPanel(int position) {
         mViewPager.setCurrentItem(position);
@@ -40,8 +41,7 @@ public class MainActivity extends AppCompatActivity {
         final RequestQueue queue = Volley.newRequestQueue(this);
         queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
         setContentView(R.layout.activity_main);
-//        GetRecipeList.setRequestQueue(queue);
-        System.out.println("Set request queue finishes");
+
 
 
         ////////////FOR TESTING//////////////////
@@ -50,6 +50,18 @@ public class MainActivity extends AppCompatActivity {
         scannedIngredients.add(broccoli);
         scannedIngredients.add(potato);
         //////////////////////////////////////////
+
+        ////////////FOR TESTING//////////////////
+        Recipe r1 = new Recipe("592735");
+        Recipe r2 = new Recipe("109376");
+        Recipe r3 = new Recipe("1062408");
+        List<Recipe> selectedRecipes = new ArrayList<>();
+        selectedRecipes.add(r1);
+        selectedRecipes.add(r2);
+        selectedRecipes.add(r3);
+        /////////////////////////////////////////
+
+        GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes, queue, shoppingList);
 
 
 //        for (int j=0; j < selectedRecipes.size(); j++) {
@@ -87,24 +99,14 @@ public class MainActivity extends AppCompatActivity {
 //                        + " " + curRecipe.getUsedIngredientCount() + " " + curRecipe.getRecipeImageLink());
 //            }
 //            System.out.println("Recipe list size: " + recipeList.size());
-
-            ////////////FOR TESTING//////////////////
-            Recipe r1 = new Recipe("592735");
-            Recipe r2 = new Recipe("109376");
-            Recipe r3 = new Recipe("1062408");
-            List<Recipe> selectedRecipes = new ArrayList<>();
-            selectedRecipes.add(r1);
-            selectedRecipes.add(r2);
-            selectedRecipes.add(r3);
-            /////////////////////////////////////////
-
-            System.out.println("Recipe " + (j + 1) + ":");
-            List<Ingredient> curlist = GetSelectedRecipeData.getAllIngredients(selectedRecipes, );
-           =GetSelectedRecipeData.getShoppingList();
-            System.out.println("Shopping list length: " + curlist.size());
-            for (int i = 0; i < curlist.size(); i++) {
-                System.out.println(curlist.get(i).getName());
+            System.out.println("BREAKPOINT 2");
+            System.out.println("Current ingredient list:");
+            System.out.println("Shopping List size: " + shoppingList.size());
+            for(int i = 0; i< shoppingList.size(); i++){
+                System.out.println(shoppingList.get(i).getName());
             }
+
+
         }
     }
 
