@@ -20,19 +20,8 @@ import android.widget.FrameLayout;
 import android.widget.SearchView;
 import android.widget.Toast;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.toolbox.JsonArrayRequest;
-import com.android.volley.toolbox.Volley;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import api.GetSelectedRecipeData;
-import api.Ingredient;
-import api.Recipe;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
@@ -46,50 +35,12 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     private Button shoppingListButton;
     private Button recipesListButton;
 
-    //TODO: Remove all code relating to scanned ingredient list and recipe list from MainActivity.
-    List<Ingredient> scannedIngredients = new ArrayList<>();
-    List<Recipe> recipeList = new ArrayList<>();
-    List<Ingredient> shoppingList = new ArrayList<>();
-    List<Recipe> selectedRecipes = new ArrayList<>();
-
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        final RequestQueue queue = Volley.newRequestQueue(this);
-        queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
-
-
-        ////////////FOR TESTING//////////////////
-        Ingredient broccoli = new Ingredient("broccoli");
-        Ingredient potato = new Ingredient("potato");
-        scannedIngredients.add(broccoli);
-        scannedIngredients.add(potato);
-        //////////////////////////////////////////
-
-        ////////////FOR TESTING//////////////////
-        Recipe r1 = new Recipe("592735");
-        Recipe r2 = new Recipe("109376");
-        Recipe r3 = new Recipe("1062408");
-        selectedRecipes.add(r1);
-        selectedRecipes.add(r2);
-        selectedRecipes.add(r3);
-        /////////////////////////////////////////
-//        GetRecipeList.callRecipeListAPI(scannedIngredients, queue, recipeList);
-        //GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes, queue, shoppingList);
-
-
-//        for (int j=0; j < selectedRecipes.size(); j++) {
-//
-//            System.out.println("Recipe " + (j+1) + ":");
-//            List<Ingredient> curlist = GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes.get(j), queue);
-//           = GetSelectedRecipeData.getShoppingList();
-//            System.out.println("Shopping list length: " + curlist.size());
-//            for (int i=0; i<curlist.size(); i++){
-//                System.out.println(curlist.get(i).getName());
-//            }
 
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.layout_slidinguppanel);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelListener());
@@ -274,36 +225,6 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         return false;
     }
 
-    /**
-     * Simple RequestFinishedListener callback for when the recipe api call returns.
-     * Currently only used for testing.
-     */
-    private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest> {
-        @Override
-        public void onRequestFinished(Request<JsonArrayRequest> request) {
-//            System.out.println("BREAKPOINT 3");
-//            Recipe curRecipe;
-//            for (int i = 0; i < recipeList.size(); i++) {
-//                curRecipe = recipeList.get(i);
-//                System.out.println(curRecipe.getRecipeID() + " " + curRecipe.getRecipeName()
-//                        + " " + curRecipe.getUsedIngredientCount() + " " + curRecipe.getRecipeImageLink());
-//            }
-//            System.out.println("Recipe list size: " + recipeList.size());
-//            System.out.println("BREAKPOINT 2");
-            System.out.println("Current ingredient list:");
-            System.out.println("Shopping List size: " + shoppingList.size());
-            for (int i = 0; i < shoppingList.size(); i++) {
-                System.out.println(shoppingList.get(i).getName());
-            }
-
-            System.out.println("The urls for the selected recipes:");
-            for (int j = 0; j < selectedRecipes.size(); j++) {
-                System.out.println("Recipe " + (j + 1) + "'s URL is: " + selectedRecipes.get(j).getRecipeURL());
-            }
-
-
-        }
-    }
 
     public static void moveSlideUpPanel(int position) {
         mViewPager.setCurrentItem(position);
