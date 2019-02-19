@@ -18,8 +18,8 @@ public class AddIngredientDialogFragment extends DialogFragment{
         return dialogFragment;
     }
 
-    public void setOnYesNoClick(OnYesNoClick yesNoClik) {
-        this.yesNoClick = yesNoClik;
+    public void setOnYesNoClick(OnYesNoClick yesNoClick) {
+        this.yesNoClick = yesNoClick;
     }
 
     @Override
