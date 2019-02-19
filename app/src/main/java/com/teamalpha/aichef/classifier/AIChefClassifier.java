@@ -2,7 +2,7 @@ package com.teamalpha.aichef.classifier;
 
 import java.nio.ByteBuffer;
 import java.util.HashMap;
-import java.util.Map;
+
 
 public class AIChefClassifier {
 
@@ -12,6 +12,7 @@ public class AIChefClassifier {
      * Loads the NN from storage.
      * May take noticeable time so should be called once (and only once) at startup
      */
+
     public static void loadNetwork() {
 
     }
@@ -31,7 +32,7 @@ public class AIChefClassifier {
      * @return Essentially, calculatedObjectProbabilities with objects with probability less than
      * MIN_OBJ_CHANCE culled
      */
-    public static HashMap<String, Float> getObjectsInImage(ByteBuffer image) {
+    public static String getObjectsInImage(ByteBuffer image) {
         HashMap<String, Float> objProbs = calculateObjectProbabilities(image);
         for(String key : objProbs.keySet()) {
             if(objProbs.get(key) < MIN_OBJ_CHANCE) {
@@ -39,6 +40,19 @@ public class AIChefClassifier {
             }
         }
 
-        return objProbs;
+        if(objProbs.size() == 0)
+            return "NOT FOUND";
+
+        float highestProb = 0;
+        String highestKey = null;
+
+        for(String key : objProbs.keySet()) {
+            if(objProbs.get(key) > highestProb) {
+                highestProb = objProbs.get(key);
+                highestKey = key;
+            }
+        }
+
+        return highestKey;
     }
 }
