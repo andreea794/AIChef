@@ -37,14 +37,13 @@ import api.Recipe;
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
     static ViewPager mViewPager;
-
-    private SearchView searchView = null;
+    private SearchView mSearchView = null;
     private CameraPreview mPreview;
     private boolean isPaused = false; // whether the preview is paused
     private FrameLayout mCamFrame = null;
     private static final int CAMERA_REQUEST_ID = 1;
-    private Button shoppingListButton;
-    private Button recipesListButton;
+    private Button mShoppingListButton;
+    private Button mRecipesListButton;
 
     //TODO: Remove all code relating to scanned ingredient list and recipe list from MainActivity.
     List<Ingredient> scannedIngredients = new ArrayList<>();
@@ -58,9 +57,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         final RequestQueue queue = Volley.newRequestQueue(this);
         queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
-
 
         ////////////FOR TESTING//////////////////
         Ingredient broccoli = new Ingredient("broccoli");
@@ -78,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         selectedRecipes.add(r3);
         /////////////////////////////////////////
 //        GetRecipeList.callRecipeListAPI(scannedIngredients, queue, recipeList);
-        //GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes, queue, shoppingList);
+//        GetSelectedRecipeData.callIngredientsListAPI(selectedRecipes, queue, shoppingList);
 
 
 //        for (int j=0; j < selectedRecipes.size(); j++) {
@@ -101,8 +100,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mViewPager.setAdapter(mAdapter);
         mCamFrame = findViewById(R.id.camFrame);
 
-        searchView = findViewById(R.id.searchView);
-        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+        // Implement searching for an ingredient manually
+        mSearchView = findViewById(R.id.searchView);
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
                 // Check format of query string and send it to
@@ -137,17 +137,16 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             }
         });
 
-        shoppingListButton = findViewById(R.id.shoppingListButton);
-        shoppingListButton.setOnClickListener(new View.OnClickListener() {
+        mShoppingListButton = findViewById(R.id.shoppingListButton);
+        mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                pauseOrResumeCamera();
                 /* TODO: Switch to shopping list page. */
             }
         });
 
-        recipesListButton = findViewById(R.id.recipesListButton);
-        recipesListButton.setOnClickListener(new View.OnClickListener() {
+        mRecipesListButton = findViewById(R.id.recipesListButton);
+        mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 /* TODO: Switch to recipes list page. */
@@ -188,13 +187,13 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     private void initialiseState() {
-        searchView.setQueryHint("Search for ingredient");
+        mSearchView.setQueryHint("Search for ingredient");
 
         // Create preview and set it as the content of the frame
         mPreview = new CameraPreview(this);
         mCamFrame.addView(mPreview);
 
-        searchView.bringToFront();
+        mSearchView.bringToFront();
     }
 
     private void askCameraPermission() {
@@ -262,9 +261,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private void clearSearchView() {
-        if (searchView != null) {
-            searchView.setQuery("", false);
-            searchView.clearFocus();
+        if (mSearchView != null) {
+            mSearchView.setQuery("", false);
+            mSearchView.clearFocus();
         } else
             Log.e("SEARCH BAR", "Trying to clear a null search view!");
     }
@@ -316,14 +315,22 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     private class SlidingUpPanelListener implements SlidingUpPanelLayout.PanelSlideListener {
         @Override
         public void onPanelSlide(View panel, float slideOffset) {
+
         }
 
         @Override
         public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-            //TODO: Pause and resume camera based on the previous state
+            // Pause camera whenever panel isn't closed
+            if (newState == SlidingUpPanelLayout.PanelState.DRAGGING && !isPaused)
+                    pauseOrResumeCamera();
+            else
+                if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED && isPaused)
+                    pauseOrResumeCamera();
+
+            /* TODO: Remove this in the final version of app. */
             //In the following line, the Toast is only shown when you expand the panel.
-            if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED)
-                Toast.makeText(MainActivity.this, "Panel Slide", Toast.LENGTH_LONG).show();
+//            if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED)
+//                Toast.makeText(MainActivity.this, "Panel Slide", Toast.LENGTH_LONG).show();
         }
     }
 
