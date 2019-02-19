@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener{
     private SearchView searchView = null;
@@ -48,13 +49,18 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                             Snackbar.LENGTH_LONG);
                     wrongFormat.getView().setBackgroundColor(Color.RED);
                     wrongFormat.show();
-                    searchView.setQuery("",false);
-                    searchView.clearFocus();
+                    clearSearchView();
                 }
                 else {
                     // Make input all lowercase and replace whitespace with underline
                     query = query.toLowerCase().replaceAll("\\s+", "_");
-                    /* TODO: Send query to back end.*/
+                    /* TODO: Send query to back end and potentially reformat ingredient string before adding to the list. */
+                    String replyFromApi = "some nicely formatted ingredient";
+                    if (!replyFromApi.equals("NOT FOUND"))
+                        popIngredientDialog(replyFromApi);
+                    else
+                        Toast.makeText(MainActivity.this, "Ingredient not found", Toast.LENGTH_SHORT).show();
+                    clearSearchView();
                 }
                 return true;
             }
@@ -71,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             @Override
             public void onClick(View v) {
                 pauseOrResumeCamera();
-                /* TODO: get rid and implement functionality. */
+                /* TODO: Switch to shopping list page. */
             }
         });
 
@@ -79,7 +85,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         recipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO: implement functionality. */
+                /* TODO: Switch to recipes list page. */
             }
         });
 
@@ -151,7 +157,14 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     @Override
     public void onPreviewUpdated(byte[] data, int width, int height) {
         if (data != null) {
-            /* TODO: send image data to back-end. */
+            /* TODO: Send image data to back end. */
+            String replyFromAPI = "NOT FOUND";
+
+            if (!replyFromAPI.equals("NOT FOUND")) {
+                if (!inList(replyFromAPI))
+                    popIngredientDialog(replyFromAPI);
+            }
+
             if (isPaused)
                 Log.e("PREVIEW", "Paused, but still in preview!");
         }
@@ -163,5 +176,36 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         if (!isPaused) {
             mPreview.resetBuffer();
         }
+    }
+
+    private void popIngredientDialog(final String ingredient) {
+        AddIngredientDialogFragment dialog = AddIngredientDialogFragment.newInstance(ingredient);
+        dialog.setOnYesNoClick(new AddIngredientDialogFragment.OnYesNoClick() {
+            @Override
+            public void onYesClicked() {
+                /* TODO: Add ingredient to list. */
+
+                Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onNoClicked() {
+                // Don't want to do anything on no click
+            }
+        });
+        dialog.show(getFragmentManager(), "New ingredient");
+    }
+
+    private void clearSearchView() {
+        if(searchView != null) {
+            searchView.setQuery("", false);
+            searchView.clearFocus();
+        } else
+            Log.e("SEARCH BAR", "Trying to clear a null search view!");
+    }
+
+    private boolean inList(String ingredient) {
+        /* TODO: check whether ingredient is already in the ingredients list. */
+        return false;
     }
 }
