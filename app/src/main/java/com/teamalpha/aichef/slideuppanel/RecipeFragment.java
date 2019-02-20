@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.teamalpha.aichef.R;
@@ -27,6 +28,9 @@ public class RecipeFragment extends Fragment {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipes = new ArrayList<>();
+        //Test data
+        recipes.add(new Recipe("Example 1", "1", "1"));
+        recipes.add(new Recipe("Really really long example recipe name to test whether list item view can handle new line", "2", "2"));
     }
 
     public static void refresh() {
@@ -53,14 +57,25 @@ public class RecipeFragment extends Fragment {
         @Override
         public RecipeViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             View recipeView = LayoutInflater.from(parent.getContext())
-                    .inflate(android.R.layout.simple_list_item_1, parent, false);
+                    .inflate(R.layout.list_item_recipe, parent, false);
             return new RecipeViewHolder(recipeView);
         }
 
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String title = recipes.get(position).getRecipeName();
-            ((RecipeViewHolder) holder).mTextView.setText(title);
+            TextView recipeView = ((RecipeViewHolder) holder).mTextView;
+            final ImageView selected = ((RecipeViewHolder) holder).mImageView;
+            recipeView.setText(title);
+            recipeView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    //Toggle the visibility of the check mark on each recipe
+                    int newVisibility = (selected.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
+                    selected.setVisibility(newVisibility);
+                }
+            });
+
         }
 
         @Override
@@ -71,10 +86,12 @@ public class RecipeFragment extends Fragment {
         private class RecipeViewHolder extends RecyclerView.ViewHolder {
 
             TextView mTextView;
+            ImageView mImageView;
 
             RecipeViewHolder(View itemView) {
                 super(itemView);
-                mTextView = (TextView) itemView;
+                mTextView = itemView.findViewById(R.id.tv_recipe_name);
+                mImageView = itemView.findViewById(R.id.iv_add_recipe);
             }
         }
     }
