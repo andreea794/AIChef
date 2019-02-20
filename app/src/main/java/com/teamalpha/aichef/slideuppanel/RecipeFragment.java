@@ -1,6 +1,7 @@
 package com.teamalpha.aichef.slideuppanel;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -9,9 +10,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.teamalpha.aichef.MainActivity;
 import com.teamalpha.aichef.R;
 
 import java.util.ArrayList;
@@ -42,13 +45,30 @@ public class RecipeFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slideup_recipe, container, false);
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
+        final RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new RecipeAdapter();
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
+        Button selectionButton = view.findViewById(R.id.button_show_selected);
+        selectionButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                ArrayList<Recipe> selectedRecipes = new ArrayList<>();
+                for (int i = 0; i < recyclerView.getChildCount(); i++) {
+                    RecipeAdapter.RecipeViewHolder curr = (RecipeAdapter.RecipeViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+                    if (curr.selected) selectedRecipes.add(recipes.get(i));
+                }
+                /*
+                Intent intent = new Intent(getContext(), RecipeListActivity.class);
+                intent.putParcelableArrayListExtra("selected", selectedRecipes);
+                startActivity(intent);
+                */
+            }
+        });
         return view;
     }
 
@@ -64,8 +84,9 @@ public class RecipeFragment extends Fragment {
         @Override
         public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
             String title = recipes.get(position).getRecipeName();
-            TextView recipeView = ((RecipeViewHolder) holder).mTextView;
-            final ImageView selected = ((RecipeViewHolder) holder).mImageView;
+            final RecipeViewHolder currHolder = (RecipeViewHolder) holder;
+            TextView recipeView = currHolder.mTextView;
+            final ImageView selected = currHolder.mImageView;
             recipeView.setText(title);
             recipeView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -73,6 +94,7 @@ public class RecipeFragment extends Fragment {
                     //Toggle the visibility of the check mark on each recipe
                     int newVisibility = (selected.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
                     selected.setVisibility(newVisibility);
+                    currHolder.selected = !currHolder.selected;
                 }
             });
 
@@ -87,11 +109,13 @@ public class RecipeFragment extends Fragment {
 
             TextView mTextView;
             ImageView mImageView;
+            boolean selected;
 
             RecipeViewHolder(View itemView) {
                 super(itemView);
                 mTextView = itemView.findViewById(R.id.tv_recipe_name);
                 mImageView = itemView.findViewById(R.id.iv_add_recipe);
+                selected = false;
             }
         }
     }
