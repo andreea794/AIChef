@@ -262,11 +262,6 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             else
                 if(newState == SlidingUpPanelLayout.PanelState.COLLAPSED && isPaused)
                     pauseOrResumeCamera();
-
-            /* TODO: Remove this in the final version of app. */
-            //In the following line, the Toast is only shown when you expand the panel.
-//            if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED)
-//                Toast.makeText(MainActivity.this, "Panel Slide", Toast.LENGTH_LONG).show();
         }
     }
 
