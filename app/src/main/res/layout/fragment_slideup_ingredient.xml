@@ -1,21 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/rv_ingredients_frag"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
+
+    <TextView
+        android:id="@+id/tv_empty_view_ingredient"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="There are no ingredients to show.\nStart by scanning some ingredients!"
+        android:visibility="gone" />
 
     <Button
         android:id="@+id/button_get_recipe"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Search Recipes"
-        android:textAlignment="center"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="30dp"/>
+        android:layout_marginBottom="30dp"
+        android:text="Search Recipes"
+        android:textAlignment="center" />
 
 </RelativeLayout>

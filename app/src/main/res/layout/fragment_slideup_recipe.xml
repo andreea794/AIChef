@@ -8,14 +8,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
+    <TextView
+        android:id="@+id/tv_empty_view_recipe"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:gravity="center"
+        android:text="There are no recipes to show.\nStart by searching for recipes in the ingredients tab!"
+        android:visibility="gone" />
+
     <Button
         android:id="@+id/button_show_selected"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:textAlignment="center"
-        android:layout_marginBottom="30dp"
         android:layout_alignParentBottom="true"
-        android:text="SHOW SELECTED RECIPES"/>
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="30dp"
+        android:text="SHOW SELECTED RECIPES"
+        android:textAlignment="center" />
 
 </RelativeLayout>

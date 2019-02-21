@@ -241,10 +241,6 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
 
         @Override
         public void onPanelStateChanged(View panel, SlidingUpPanelLayout.PanelState previousState, SlidingUpPanelLayout.PanelState newState) {
-            //TODO: Pause and resume camera based on the previous state
-            //In the following line, the Toast is only shown when you expand the panel.
-            if (previousState == SlidingUpPanelLayout.PanelState.COLLAPSED)
-                Toast.makeText(MainActivity.this, "Panel Slide", Toast.LENGTH_LONG).show();
         }
     }
 
