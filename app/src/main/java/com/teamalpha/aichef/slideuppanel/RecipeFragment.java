@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.teamalpha.aichef.MainActivity;
 import com.teamalpha.aichef.R;
+import com.teamalpha.aichef.RecipesList;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,11 +63,11 @@ public class RecipeFragment extends Fragment {
                     RecipeAdapter.RecipeViewHolder curr = (RecipeAdapter.RecipeViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
                     if (curr.selected) selectedRecipes.add(recipes.get(i));
                 }
-                /*
-                Intent intent = new Intent(getContext(), RecipeListActivity.class);
+
+                Intent intent = new Intent(getContext(), RecipesList.class);
                 intent.putParcelableArrayListExtra("selected", selectedRecipes);
                 startActivity(intent);
-                */
+
             }
         });
         return view;

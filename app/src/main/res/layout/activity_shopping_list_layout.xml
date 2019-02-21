@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="2dp">
+
+
+    <CheckedTextView
+        android:id="@+id/ingredientText"
+        android:layout_width="fill_parent"
+        android:layout_height="50dp"
+        android:layout_toRightOf="@id/recipeImg"
+        android:checked="false"
+        android:gravity="center_vertical"
+        android:paddingLeft="15dp"
+        android:text="Checked Text View Example"
+        android:textColor="#000" />
+    <!-- CheckedTextView In Android -->
+
+</RelativeLayout>
