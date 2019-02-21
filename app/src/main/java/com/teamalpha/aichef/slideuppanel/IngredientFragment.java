@@ -30,16 +30,13 @@ public class IngredientFragment extends Fragment {
 
     static List<Ingredient> mScannedIngredients;
     static IngredientAdapter adapter;
+    static LinearLayout mEmptyView;
     RequestQueue mQueue;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mScannedIngredients = new ArrayList<>();
-        //Testing
-        mScannedIngredients.add(new Ingredient("Broccoli"));
-        mScannedIngredients.add(new Ingredient("Potato"));
-
         mQueue = Volley.newRequestQueue(getContext());
         mQueue.addRequestFinishedListener(new RecipeRequestFinishedListener());
     }
@@ -51,6 +48,10 @@ public class IngredientFragment extends Fragment {
                              @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slideup_ingredient, container, false);
+
+        mEmptyView = view.findViewById(R.id.tv_empty_view_ingredient);
+        if (mScannedIngredients.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView recyclerView = view.findViewById(R.id.rv_ingredients_frag);
         recyclerView.setLayoutManager(layoutManager);
@@ -91,7 +92,7 @@ public class IngredientFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     mScannedIngredients.remove(holder.getAdapterPosition());
-                    IngredientAdapter.this.notifyDataSetChanged();
+                    refresh();
                 }
             });
         }
@@ -113,6 +114,12 @@ public class IngredientFragment extends Fragment {
                 mImageView = layout.findViewById(R.id.iv_remove_ingredient);
             }
         }
+    }
+
+    static void refresh() {
+        adapter.notifyDataSetChanged();
+        int visibility = (mScannedIngredients.size() == 0) ? View.VISIBLE : View.GONE;
+        mEmptyView.setVisibility(visibility);
     }
 
     /**

@@ -12,9 +12,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import com.teamalpha.aichef.MainActivity;
 import com.teamalpha.aichef.R;
 import com.teamalpha.aichef.RecipesList;
 
@@ -27,24 +27,28 @@ public class RecipeFragment extends Fragment {
 
     static List<Recipe> recipes;
     static RecipeAdapter adapter;
+    private static LinearLayout mEmptyView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipes = new ArrayList<>();
-        //Test data
-        recipes.add(new Recipe("Example 1", "1", "1"));
-        recipes.add(new Recipe("Really really long example recipe name to test whether list item view can handle new line", "2", "2"));
     }
 
     public static void refresh() {
         adapter.notifyDataSetChanged();
+        int visibility = (recipes.size() == 0) ? View.VISIBLE : View.GONE;
+        mEmptyView.setVisibility(visibility);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_slideup_recipe, container, false);
+
+        mEmptyView = view.findViewById(R.id.tv_empty_view_recipe);
+        if (recipes.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
+
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         final RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
         recyclerView.setLayoutManager(layoutManager);
@@ -67,7 +71,6 @@ public class RecipeFragment extends Fragment {
                 Intent intent = new Intent(getContext(), RecipesList.class);
                 intent.putParcelableArrayListExtra("selected", selectedRecipes);
                 startActivity(intent);
-
             }
         });
         return view;
@@ -93,7 +96,7 @@ public class RecipeFragment extends Fragment {
                 @Override
                 public void onClick(View view) {
                     //Toggle the visibility of the check mark on each recipe
-                    int newVisibility = (selected.getVisibility() == View.VISIBLE) ? View.INVISIBLE : View.VISIBLE;
+                    int newVisibility = (currHolder.selected) ? View.INVISIBLE : View.VISIBLE;
                     selected.setVisibility(newVisibility);
                     currHolder.selected = !currHolder.selected;
                 }
@@ -120,6 +123,4 @@ public class RecipeFragment extends Fragment {
             }
         }
     }
-
-
 }
