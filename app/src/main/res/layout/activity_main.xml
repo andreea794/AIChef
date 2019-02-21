@@ -16,6 +16,7 @@
         tools:context="com.teamalpha.aichef.MainActivity"
         android:orientation="vertical">
 
+
         <FrameLayout
             android:id="@+id/menuBar"
             android:layout_width="match_parent"
