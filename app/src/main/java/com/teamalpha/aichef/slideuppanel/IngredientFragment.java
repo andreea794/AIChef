@@ -30,7 +30,7 @@ public class IngredientFragment extends Fragment {
 
     static List<Ingredient> mScannedIngredients;
     static IngredientAdapter adapter;
-    static TextView mEmptyView;
+    static LinearLayout mEmptyView;
     RequestQueue mQueue;
 
     @Override

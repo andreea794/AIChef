@@ -8,13 +8,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 
-    <TextView
+    <LinearLayout
         android:id="@+id/tv_empty_view_ingredient"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="There are no ingredients to show.\nStart by scanning some ingredients!"
-        android:visibility="gone" />
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:orientation="vertical"
+        android:paddingBottom="50dp"
+        android:visibility="visible">
+
+        <ImageView
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_empty_scanned_list" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="There are no ingredients to show.\nStart by scanning some ingredients!" />
+
+    </LinearLayout>
 
     <Button
         android:id="@+id/button_get_recipe"

@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.teamalpha.aichef.R;
@@ -24,7 +25,7 @@ public class RecipeFragment extends Fragment {
 
     static List<Recipe> recipes;
     static RecipeAdapter adapter;
-    private static TextView mEmptyView;
+    private static LinearLayout mEmptyView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
