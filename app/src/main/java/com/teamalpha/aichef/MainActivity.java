@@ -121,8 +121,11 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                     query = query.toLowerCase().replaceAll("\\s+", "_");
                     /* TODO: Send query to back end and potentially reformat ingredient string before adding to the list. */
                     String replyFromApi = "some nicely formatted ingredient";
-                    if (!replyFromApi.equals("NOT FOUND"))
+                    if (!replyFromApi.equals("NOT FOUND")) {
+                        if (!isPaused)
+                            pauseOrResumeCamera();
                         popIngredientDialog(replyFromApi);
+                    }
                     else
                         Toast.makeText(MainActivity.this, "Ingredient not found", Toast.LENGTH_SHORT).show();
                     clearSearchView();
@@ -225,8 +228,11 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             String replyFromAPI = "NOT FOUND";
 
             if (!replyFromAPI.equals("NOT FOUND")) {
-                if (!inList(replyFromAPI))
+                // API reply is a valid ingredient
+                if (!inList(replyFromAPI)) {
+                    // Ingredient isn't already in the list, so we can potentially add it
                     popIngredientDialog(replyFromAPI);
+                }
             }
 
             if (isPaused)
@@ -244,17 +250,27 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
 
     private void popIngredientDialog(final String ingredient) {
         AddIngredientDialogFragment dialog = AddIngredientDialogFragment.newInstance(ingredient);
+
+        // Disable possibility of cancelling dialog when touching outside it
+        dialog.setCancelable(false);
+
+        // Set listeners for Yes/No buttons
         dialog.setOnYesNoClick(new AddIngredientDialogFragment.OnYesNoClick() {
             @Override
             public void onYesClicked() {
-                /* TODO: Add ingredient to list. */
+                //Resume camera
+                if (isPaused)
+                    pauseOrResumeCamera();
+                // TODO: Add ingredient to list.
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onNoClicked() {
-                // Don't want to do anything on no click
+                // Resume camera; nothing else to do on No click
+                if (isPaused)
+                    pauseOrResumeCamera();
             }
         });
         dialog.show(getFragmentManager(), "New ingredient");
@@ -269,8 +285,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        /* TODO: check whether ingredient is already in the ingredients list. */
-        return false;
+        // Check whether ingredient is already in the ingredients list.
+        return scannedIngredients.contains(new Ingredient(ingredient));
     }
 
     /**
