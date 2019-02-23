@@ -1,7 +1,7 @@
 package com.teamalpha.aichef;
 
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -13,9 +13,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import api.GetSelectedRecipeData;
 import api.Ingredient;
 import api.Recipe;
 
