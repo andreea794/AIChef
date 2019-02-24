@@ -145,6 +145,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
 
         // Create preview and set it as the content of the frame
         mPreview = new CameraPreview(this);
+
         mCamFrame.addView(mPreview);
 
         mSearchView.bringToFront();

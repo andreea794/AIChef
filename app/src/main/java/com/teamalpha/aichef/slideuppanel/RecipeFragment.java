@@ -3,10 +3,12 @@ package com.teamalpha.aichef.slideuppanel;
 
 import android.content.Intent;
 import android.os.Bundle;
+
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,7 @@ public class RecipeFragment extends Fragment {
     static List<Recipe> recipes;
     static RecipeAdapter adapter;
     private static LinearLayout mEmptyView;
+    static RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -36,9 +39,18 @@ public class RecipeFragment extends Fragment {
     }
 
     public static void refresh() {
+        clearSelections();
         adapter.notifyDataSetChanged();
         int visibility = (recipes.size() == 0) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
+    }
+
+    public static void clearSelections() {
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            RecipeAdapter.RecipeViewHolder holder = (RecipeAdapter.RecipeViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+            holder.selected = false;
+            holder.itemView.findViewById(R.id.iv_add_recipe).setVisibility(View.INVISIBLE);
+        }
     }
 
     @Nullable
@@ -50,7 +62,7 @@ public class RecipeFragment extends Fragment {
         if (recipes.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        final RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
+        recyclerView = view.findViewById(R.id.rv_recipes_frag);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new RecipeAdapter();
