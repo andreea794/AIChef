@@ -28,14 +28,6 @@ public class IngredientFragmentTest {
     @Rule
     public ActivityTestRule<MainActivity> activityRule = new ActivityTestRule<>(MainActivity.class);
 
-    /*
-    WRITE TESTS FOR:
-    //TODO: Implement simple intent from MA to RLA
-    - DATA PERSISTENCE WHEN YOU MOVE BETWEEN ACTIVITIES
-    //TODO: Refactor API class so api call is mockable.
-    - DATA PASSING BETWEEN FRAGMENTS (MOCK API CALL)
-    - TEST FOR API CALL (ENSURE NO CALL WHEN SCANNED LIST IS EMPTY, SHOW SOME VIEW WHEN RESPONSE IS EMPTY, MAYBE LIMIT INPUT SIZE?)
-    */
     @Test
     public void scanned_list_is_empty_at_startup() {
         onView(withId(R.id.rv_ingredients_frag)).check(withItemCount(0));
@@ -63,7 +55,7 @@ public class IngredientFragmentTest {
         onView(withId(R.id.tv_empty_view_ingredient)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
     }
 
-    private void addDummyIngredient() throws Throwable {
+    public static void addDummyIngredient() throws Throwable {
         IngredientFragment.mScannedIngredients.add(new Ingredient("Ingredient"));
         runOnUiThread(new Runnable() {
             @Override

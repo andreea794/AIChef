@@ -1,4 +1,4 @@
-package com.teamalpha.aichef.slideuppanel;
+package com.teamalpha.aichef;
 
 import android.view.View;
 
