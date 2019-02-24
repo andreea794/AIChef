@@ -42,7 +42,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AIChefClassifier.loadNetwork(this.getAssets());
+        AIChefClassifier.loadNetwork(this.getAssets(), this.getBaseContext());
 
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.layout_slidinguppanel);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelListener());

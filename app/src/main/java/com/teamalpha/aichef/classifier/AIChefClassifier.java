@@ -1,6 +1,7 @@
 package com.teamalpha.aichef.classifier;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
@@ -10,6 +11,7 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -30,10 +32,10 @@ public class AIChefClassifier {
     private static final String MODEL_PATH = "graph.mp3";
     private static final String LABEL_PATH = "labels.mp3";
 
-    private static final float MIN_OBJ_CHANCE = 0.5f;
+    private static final float MIN_OBJ_CHANCE = 0.75f;
     private static final int INPUT_SIZE = 224;
 
-    private static int numClasses = 40;
+    private static int numClasses;
 
     private static Interpreter tfInterpreter;
     private static String[] classNames;
@@ -43,7 +45,7 @@ public class AIChefClassifier {
      * May take noticeable time so should be called once (and only once) at startup
      */
 
-    public static void loadNetwork(AssetManager assetManager) {
+    public static void loadNetwork(AssetManager assetManager, Context context) {
 
         ByteBuffer modelBuf = null;
 
@@ -94,38 +96,6 @@ public class AIChefClassifier {
                 Log.e("AIChefClassifier", "Error closing reader: " + ioe.getMessage());
             }
         }
-
-        byte[][][] randImg = new byte[500][500][3];
-
-        Random rand = new Random();
-
-        for(int x = 0; x < 500; x++) {
-            for(int y = 0; y < 500; y++) {
-                for(int c = 0; c < 3; c++) {
-                    randImg[x][y][c] = (byte) rand.nextInt(255);
-                }
-            }
-        }
-
-        byte[][][] img = new byte[224][224][3];
-
-        try {
-            Bitmap bmp = BitmapFactory.decodeStream(assetManager.open("image.jpg"));
-
-            for(int x = 0; x < 224; x++) {
-                for(int y = 0; y < 224; y++) {
-                    int colour = bmp.getPixel(x, y);
-                    img[x][y][0] = (byte)((colour >> 16) & 0xff);
-                    img[x][y][1] = (byte)((colour >> 8) & 0xff);
-                    img[x][y][2] = (byte)((colour >> 0) & 0xff);
-                }
-            }
-
-        } catch(Exception e) {
-
-            e.printStackTrace();
-        }
-
     }
 
     /**
@@ -190,6 +160,16 @@ public class AIChefClassifier {
 
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
+//        try {
+//            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
+//            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output.png").getAbsolutePath());
+//            resizedImg.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+//            // PNG is a lossless format, the compression factor (100) is ignored
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.e("AIChefClassifier", "Error saving img");
+//        }
+
         float[][][][] inputImage = new float[1][INPUT_SIZE][INPUT_SIZE][3];
         for(int x = 0; x < INPUT_SIZE; x++) {
             for(int y = 0; y < INPUT_SIZE; y++) {
@@ -199,6 +179,8 @@ public class AIChefClassifier {
                 inputImage[0][x][y][2] = ((pixel >> 0) & 0xff) / 255f;
             }
         }
+
+
 
 
         // Run network
