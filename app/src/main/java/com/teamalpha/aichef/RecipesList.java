@@ -13,6 +13,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
+import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -30,8 +31,7 @@ import static com.teamalpha.aichef.RecipesListAdapter.recipesList;
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
     //List<Recipe> recipesList;
-    List<Ingredient> ingredientList;
-    boolean ingredientListAPICalled = false;
+    static List<Ingredient> ingredientList;
     static RecipesListAdapter recipesListAdapter;
 
 
@@ -53,18 +53,26 @@ public class RecipesList extends AppCompatActivity {
 
 
         if(getIntent().hasExtra("selected")){
-            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
-            LinkedList<Recipe> result = new LinkedList<Recipe>();
-            for(Recipe recipe: temp){
-                result.add(recipe);
-            }
-            recipesListAdapter.recipesList = result;
-        }
-        else{
+//            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
+//            LinkedList<Recipe> result = new LinkedList<Recipe>();
+//            for(Recipe recipe: temp){
+//                result.add(recipe);
+//            }
+//            recipesListAdapter.recipesList = result;
             List<Recipe> recipeList = new LinkedList<Recipe>();
-            recipeList.add(new Recipe("Easy & Delish! ~ Apple Crumble", "641803", "https://spoonacular.com/recipeImages/Easy---Delish--Apple-Crumble-641803.jpg"));
+            recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
+            recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
             recipesList = recipeList;
             GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
+        }
+        else{
+            if (recipesList == null) {
+                List<Recipe> recipeList = new LinkedList<Recipe>();
+                recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
+                recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
+                recipesList = recipeList;
+                GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
+            }
         }
 
         Button generateIngredientsBtn  = (Button)findViewById(R.id.spawnIngredientsList);
@@ -87,7 +95,6 @@ public class RecipesList extends AppCompatActivity {
     }
 
 
-    //FOR TESTING
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest>{
 
         RequestQueue queue = null;
@@ -96,6 +103,7 @@ public class RecipesList extends AppCompatActivity {
         }
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request){
+            System.out.println("Finished ingredients API");
             recipesListAdapter.notifyDataSetChanged();
             if(ShoppingActivity.adapter != null){
                 //update the shopping list whenever the API call returns
@@ -103,7 +111,6 @@ public class RecipesList extends AppCompatActivity {
                 ShoppingActivity.adapter.notifyDataSetChanged();
             }
         }
-
     }
 
 }
