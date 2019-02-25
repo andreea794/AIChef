@@ -62,6 +62,8 @@ public class AIChefClassifier implements Runnable {
 
     public AIChefClassifier(AssetManager assetManager, MainActivity activity) {
 
+        this.mainActivity = activity;
+
         imgValid = false;
         canAcceptImg = true;
 
@@ -116,8 +118,8 @@ public class AIChefClassifier implements Runnable {
         }
 
         Thread classifierThread = new Thread(this);
-        classifierThread.run();
         classifierThread.setDaemon(true);
+        classifierThread.start();
     }
 
 
