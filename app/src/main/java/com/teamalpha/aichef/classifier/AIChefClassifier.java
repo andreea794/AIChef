@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 
 import org.tensorflow.lite.Interpreter;
 
-public class AIChefClassifier {
+public class AIChefClassifier implements Runnable {
 
     private static final String MODEL_PATH = "graph.mp3";
     private static final String LABEL_PATH = "labels.mp3";
@@ -44,17 +44,24 @@ public class AIChefClassifier {
     private static final float MIN_OBJ_CHANCE = 0.75f;
     private static final int INPUT_SIZE = 224;
 
-    private static int numClasses;
+    private int numClasses;
 
-    private static Interpreter tfInterpreter;
-    private static String[] classNames;
+    private Interpreter tfInterpreter;
+    private String[] classNames;
+
+    private Bitmap imgToClassify;
+    private boolean imgValid;
+    private boolean canAcceptImg;
 
     /**
      * Loads the NN from storage.
      * May take noticeable time so should be called once (and only once) at startup
      */
 
-    public static void loadNetwork(AssetManager assetManager, Context context) {
+    public AIChefClassifier(AssetManager assetManager, Context context) {
+
+        imgValid = false;
+        canAcceptImg = true;
 
         ByteBuffer modelBuf = null;
 
@@ -105,6 +112,52 @@ public class AIChefClassifier {
                 Log.e("AIChefClassifier", "Error closing reader: " + ioe.getMessage());
             }
         }
+
+        Thread classifierThread = new Thread(this);
+        classifierThread.run();
+        classifierThread.setDaemon(true);
+    }
+
+
+    @Override
+    public void run() {
+
+        while(true) {
+            if(imgValid) {
+                byte[][][] image = new byte[imgToClassify.getWidth()][imgToClassify.getHeight()][3];
+
+                for(int x = 0; x < imgToClassify.getWidth(); x++) {
+                    for(int y = 0; y < imgToClassify.getHeight(); y++) {
+                        int colour = imgToClassify.getPixel(x, y);
+                        image[x][y][0] = (byte) ((colour >> 16) & 0xff);
+                        image[x][y][1] = (byte) ((colour >> 8) & 0xff);
+                        image[x][y][2] = (byte) ((colour >> 0) & 0xff);
+                    }
+                }
+
+                HashMap<String, Float> objProbs = calculateObjectProbabilities(image);
+
+                float highestProb = 0;
+                String highestKey = null;
+
+                for(String key : objProbs.keySet()) {
+                    if(objProbs.get(key) > highestProb) {
+                        highestProb = objProbs.get(key);
+                        highestKey = key;
+                    }
+                }
+
+                Log.i("AIChefClassifier", highestKey + " : " + highestProb);
+
+                String classification = highestProb >= MIN_OBJ_CHANCE ? highestKey : "NOT FOUND";
+
+                // Call MainActivity TODO
+
+                imgValid = false;
+                canAcceptImg = true;
+            }
+        }
+
     }
 
     /**
@@ -112,7 +165,7 @@ public class AIChefClassifier {
      * @param image The XxY RGB image
      * @return A mapping from each object to it's calculated probability
      */
-    public static HashMap<String, Float> calculateObjectProbabilities(byte[][][] image, Context context, MainActivity activity) {
+    public HashMap<String, Float> calculateObjectProbabilities(byte[][][] image) {
 
         Log.i("AIChefClassifier", "Calculating obj probs for img of dims: " + image.length
                 + "x" + image[0].length + "x" + image[0][0].length);
@@ -170,17 +223,17 @@ public class AIChefClassifier {
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
 
-        Dialog builder = new Dialog(activity);
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //nothing;
-            }
-        });
-
+//        Dialog builder = new Dialog(activity);
+//        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        builder.getWindow().setBackgroundDrawable(
+//                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialogInterface) {
+//                //nothing;
+//            }
+//        });
+//
 //        ImageView imageView = new ImageView(activity);
 //        imageView.setImageBitmap(resizedImg);
 //        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
@@ -234,35 +287,19 @@ public class AIChefClassifier {
      * @return Return the class with the highest probability if it is above the threshold, otherwise return "NOT FOUND"
      * MIN_OBJ_CHANCE culled
      */
-    public static String classify(Bitmap bmp, Context context, MainActivity activity) {
+    public synchronized void classify(Bitmap bmp, Context context, MainActivity activity) {
+        if(!canAcceptImg)
+            throw new IllegalStateException("Cannot call classify when not accepting image");
+
 
         Log.i("AIChefClassifier", "Classifying img...");
 
-        byte[][][] image = new byte[bmp.getWidth()][bmp.getHeight()][3];
+        imgToClassify = bmp;
+        canAcceptImg = false;
+        imgValid = true;
+    }
 
-        for(int x = 0; x < bmp.getWidth(); x++) {
-            for(int y = 0; y < bmp.getHeight(); y++) {
-                int colour = bmp.getPixel(x, y);
-                image[x][y][0] = (byte) ((colour >> 16) & 0xff);
-                image[x][y][1] = (byte) ((colour >> 8) & 0xff);
-                image[x][y][2] = (byte) ((colour >> 0) & 0xff);
-            }
-        }
-
-        HashMap<String, Float> objProbs = calculateObjectProbabilities(image, context, activity);
-
-        float highestProb = 0;
-        String highestKey = null;
-
-        for(String key : objProbs.keySet()) {
-            if(objProbs.get(key) > highestProb) {
-                highestProb = objProbs.get(key);
-                highestKey = key;
-            }
-        }
-
-        Log.i("AIChefClassifier", highestKey + " : " + highestProb);
-
-        return highestProb >= MIN_OBJ_CHANCE ? highestKey : "NOT FOUND";
+    public boolean canAcceptImage() {
+        return canAcceptImg;
     }
 }
