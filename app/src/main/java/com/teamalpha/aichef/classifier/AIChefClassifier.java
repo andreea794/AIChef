@@ -103,7 +103,7 @@ public class AIChefClassifier {
      * @param image The XxY RGB image
      * @return A mapping from each object to it's calculated probability
      */
-    public static HashMap<String, Float> calculateObjectProbabilities(byte[][][] image) {
+    public static HashMap<String, Float> calculateObjectProbabilities(byte[][][] image, Context context) {
 
         Log.i("AIChefClassifier", "Calculating obj probs for img of dims: " + image.length
                 + "x" + image[0].length + "x" + image[0][0].length);
@@ -160,15 +160,15 @@ public class AIChefClassifier {
 
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
-//        try {
-//            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
-//            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output.png").getAbsolutePath());
-//            resizedImg.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-//            // PNG is a lossless format, the compression factor (100) is ignored
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//            Log.e("AIChefClassifier", "Error saving img");
-//        }
+        try {
+            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
+            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output_" + System.currentTimeMillis() + ".png").getAbsolutePath());
+            resizedImg.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+            // PNG is a lossless format, the compression factor (100) is ignored
+        } catch (IOException e) {
+            e.printStackTrace();
+            Log.e("AIChefClassifier", "Error saving img");
+        }
 
         float[][][][] inputImage = new float[1][INPUT_SIZE][INPUT_SIZE][3];
         for(int x = 0; x < INPUT_SIZE; x++) {
@@ -203,7 +203,9 @@ public class AIChefClassifier {
      * @return Return the class with the highest probability if it is above the threshold, otherwise return "NOT FOUND"
      * MIN_OBJ_CHANCE culled
      */
-    public static String classify(Bitmap bmp) {
+    public static String classify(Bitmap bmp, Context context) {
+
+        Log.i("AIChefClassifier", "Classifying img...");
 
         byte[][][] image = new byte[bmp.getWidth()][bmp.getHeight()][3];
 
@@ -216,7 +218,7 @@ public class AIChefClassifier {
             }
         }
 
-        HashMap<String, Float> objProbs = calculateObjectProbabilities(image);
+        HashMap<String, Float> objProbs = calculateObjectProbabilities(image, context);
 
         float highestProb = 0;
         String highestKey = null;

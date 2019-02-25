@@ -182,7 +182,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     @Override
     public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            String replyFromAPI = AIChefClassifier.classify(data);
+            String replyFromAPI = AIChefClassifier.classify(data, getBaseContext());
 
             if (!replyFromAPI.equals("NOT FOUND")) {
                 // API reply is a valid ingredient
