@@ -2,6 +2,7 @@ package com.teamalpha.aichef;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -176,10 +177,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     @Override
-    public void onPreviewUpdated(byte[] data, int width, int height) {
+    public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            /* TODO: Send image data to back end. */
-            String replyFromAPI = "NOT FOUND";
+            String replyFromAPI = AIChefClassifier.classify(data);
 
             if (!replyFromAPI.equals("NOT FOUND")) {
                 // API reply is a valid ingredient
