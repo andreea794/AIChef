@@ -1,6 +1,9 @@
 package api;
 
-public class Ingredient {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class Ingredient implements Parcelable {
     final private String name;
 //    final private String amount;
 //    final private String unit;
@@ -36,4 +39,31 @@ public class Ingredient {
 //        this.instruction = null;
     }
 
+    public static final Parcelable.Creator<Ingredient> CREATOR = new Parcelable.Creator<Ingredient>() {
+
+        @Override
+        public Ingredient createFromParcel(Parcel parcel) {
+            return new Ingredient(parcel);
+        }
+
+        @Override
+        public Ingredient[] newArray(int i) {
+            return new Ingredient[0];
+        }
+    };
+
+    private Ingredient(Parcel parcel) {
+        name = parcel.readString();
+    }
+
+
+    @Override
+    public int describeContents() {
+        return hashCode();
+    }
+
+    @Override
+    public void writeToParcel(Parcel parcel, int i) {
+        parcel.writeString(name);
+    }
 }
