@@ -40,7 +40,11 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         }
 
-        adapter = new ShoppingListAdapter(getApplicationContext(), res, ingredientsList);
+
+        if(adapter == null){
+            adapter = new ShoppingListAdapter(ingredientsList, getApplicationContext());
+        }
+
         shoppingListView = (ListView)findViewById(R.id.shoppingList);
         shoppingListView.setAdapter(adapter);
 

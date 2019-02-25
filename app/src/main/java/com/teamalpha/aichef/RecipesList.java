@@ -25,6 +25,8 @@ import api.GetSelectedRecipeData;
 import api.Ingredient;
 import api.Recipe;
 
+import static com.teamalpha.aichef.RecipesListAdapter.recipesList;
+
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
     //List<Recipe> recipesList;
@@ -50,15 +52,18 @@ public class RecipesList extends AppCompatActivity {
 
 
 
-        if(getIntent().hasExtra("recipes")){
-//            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("recipes");
-//            recipesList = temp.stream()
-
+        if(getIntent().hasExtra("selected")){
+            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
+            LinkedList<Recipe> result = new LinkedList<Recipe>();
+            for(Recipe recipe: temp){
+                result.add(recipe);
+            }
+            recipesListAdapter.recipesList = result;
         }
         else{
             List<Recipe> recipeList = new LinkedList<Recipe>();
             recipeList.add(new Recipe("Easy & Delish! ~ Apple Crumble", "641803", "https://spoonacular.com/recipeImages/Easy---Delish--Apple-Crumble-641803.jpg"));
-            RecipesListAdapter.recipesList = recipeList;
+            recipesList = recipeList;
             GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
         }
 
@@ -66,6 +71,7 @@ public class RecipesList extends AppCompatActivity {
         generateIngredientsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                //start a shopping list activity and pass in the ingredients list to buy
                 ArrayList<String> ingredients = new ArrayList<String>();
                 for(Ingredient ingredient : ingredientList){
                     ingredients.add(ingredient.getName());
@@ -92,7 +98,9 @@ public class RecipesList extends AppCompatActivity {
         public void onRequestFinished(Request<JsonArrayRequest> request){
             recipesListAdapter.notifyDataSetChanged();
             if(ShoppingActivity.adapter != null){
-                recipesListAdapter.notifyDataSetChanged();
+                //update the shopping list whenever the API call returns
+                ShoppingActivity.adapter.ingredientList = ingredientList;
+                ShoppingActivity.adapter.notifyDataSetChanged();
             }
         }
 

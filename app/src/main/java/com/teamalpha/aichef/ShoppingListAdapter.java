@@ -20,11 +20,9 @@ public class ShoppingListAdapter extends BaseAdapter {
     static List<Ingredient> ingredientList;
     private Context c;
     private LayoutInflater mInflater;
-    private Resources res;
 
-    public ShoppingListAdapter(Context c, Resources res, List<Ingredient> ingredientList){
+    public ShoppingListAdapter(List<Ingredient> ingredientList, Context c){
         this.c = c;
-        this.res = res;
         this.ingredientList = ingredientList;
         this.mInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
