@@ -38,7 +38,7 @@ import org.tensorflow.lite.Interpreter;
 
 public class AIChefClassifier implements Runnable {
 
-    private static final String MODEL_PATH = "graph.mp3";
+    private static final String MODEL_PATH = "graph2.mp3";
     private static final String LABEL_PATH = "labels.mp3";
 
     private static final float MIN_OBJ_CHANCE = 0.75f;
@@ -61,7 +61,6 @@ public class AIChefClassifier implements Runnable {
      */
 
     public AIChefClassifier(AssetManager assetManager, MainActivity activity) {
-
         this.mainActivity = activity;
 
         imgValid = false;
