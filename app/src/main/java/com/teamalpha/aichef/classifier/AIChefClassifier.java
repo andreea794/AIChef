@@ -53,12 +53,14 @@ public class AIChefClassifier implements Runnable {
     private boolean imgValid;
     private boolean canAcceptImg;
 
+    private MainActivity mainActivity;
+
     /**
      * Loads the NN from storage.
      * May take noticeable time so should be called once (and only once) at startup
      */
 
-    public AIChefClassifier(AssetManager assetManager, Context context) {
+    public AIChefClassifier(AssetManager assetManager, MainActivity activity) {
 
         imgValid = false;
         canAcceptImg = true;
@@ -151,7 +153,7 @@ public class AIChefClassifier implements Runnable {
 
                 String classification = highestProb >= MIN_OBJ_CHANCE ? highestKey : "NOT FOUND";
 
-                // Call MainActivity TODO
+                mainActivity.validClassificationFound(classification);
 
                 imgValid = false;
                 canAcceptImg = true;
