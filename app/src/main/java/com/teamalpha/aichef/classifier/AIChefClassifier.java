@@ -181,14 +181,14 @@ public class AIChefClassifier {
             }
         });
 
-        ImageView imageView = new ImageView(activity);
-        imageView.setImageBitmap(resizedImg);
-        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                ViewGroup.LayoutParams.MATCH_PARENT));
-        builder.show();
-
-        Log.i("AIChefClassifier", "Showing popup");
+//        ImageView imageView = new ImageView(activity);
+//        imageView.setImageBitmap(resizedImg);
+//        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+//                ViewGroup.LayoutParams.MATCH_PARENT,
+//                ViewGroup.LayoutParams.MATCH_PARENT));
+//        builder.show();
+//
+//        Log.i("AIChefClassifier", "Showing popup");
 
 
 //        try {
