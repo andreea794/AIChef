@@ -90,7 +90,6 @@ public class RecipesList extends AppCompatActivity {
                 Intent shoppingList = new Intent(getApplicationContext(), ShoppingActivity.class);
                 shoppingList.putStringArrayListExtra("Ingredients", ingredients);
                 startActivity(shoppingList);
-                //TODO: Convert to parcelable
             }
         });
 
