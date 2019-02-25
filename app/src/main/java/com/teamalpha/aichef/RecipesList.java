@@ -56,6 +56,7 @@ public class RecipesList extends AppCompatActivity {
             for(Recipe recipe: temp){
                 result.add(recipe);
             }
+            System.out.println("inside selected");
             recipesListAdapter.recipesList = result;
 //            List<Recipe> recipeList = new LinkedList<Recipe>();
 //            recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
@@ -64,15 +65,17 @@ public class RecipesList extends AppCompatActivity {
 //            GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
         }
         else{
-            if (recipesList == null) {
+            if (RecipesListAdapter.recipesList.size() == 0) {
                 List<Recipe> recipeList = new LinkedList<Recipe>();
                 recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
                 recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
-                recipesList = recipeList;
+                RecipesListAdapter.recipesList = recipeList;
+                System.out.println("im here");
                 GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
             }
             else{
-                for(Recipe recipe : recipesList){
+                System.out.println("inside else of non-selected");
+                for(Recipe recipe : RecipesListAdapter.recipesList){
                     System.out.println(recipe.getRecipeName());
                 }
             }

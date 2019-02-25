@@ -54,7 +54,9 @@ public class RecipesListAdapter extends BaseAdapter {
         this.mInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.res = res;
         tickImage = this.res.obtainTypedArray(R.array.tickImages);
-        this.recipesList = new LinkedList<Recipe>();
+        if(recipesList == null){
+            this.recipesList = new LinkedList<Recipe>();
+        }
         this.checkedRecipes = new LinkedList<Boolean>();
         this.pickedRecipeNames = new LinkedList<Recipe>();
         this.executor = Executors.newFixedThreadPool(5);
