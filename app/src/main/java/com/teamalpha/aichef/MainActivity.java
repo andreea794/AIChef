@@ -23,7 +23,10 @@ import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.teamalpha.aichef.classifier.AIChefClassifier;
+import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
+
+import api.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
@@ -239,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        /* TODO: check whether ingredient is already in the ingredients list. */
-        return false;
+        return IngredientFragment.scannedIngredients.contains(new Ingredient(ingredient));
     }
 
 

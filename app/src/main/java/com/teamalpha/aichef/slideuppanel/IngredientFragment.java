@@ -28,7 +28,7 @@ import api.Ingredient;
 
 public class IngredientFragment extends Fragment {
 
-    static List<Ingredient> mScannedIngredients;
+    public static List<Ingredient> scannedIngredients;
     static IngredientAdapter adapter;
     static LinearLayout mEmptyView;
     RequestQueue mQueue;
@@ -36,7 +36,7 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mScannedIngredients = new ArrayList<>();
+        scannedIngredients = new ArrayList<>();
         mQueue = Volley.newRequestQueue(getContext());
         mQueue.addRequestFinishedListener(new RecipeRequestFinishedListener());
     }
@@ -50,7 +50,7 @@ public class IngredientFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_slideup_ingredient, container, false);
 
         mEmptyView = view.findViewById(R.id.tv_empty_view_ingredient);
-        if (mScannedIngredients.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
+        if (scannedIngredients.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
         RecyclerView recyclerView = view.findViewById(R.id.rv_ingredients_frag);
@@ -65,7 +65,7 @@ public class IngredientFragment extends Fragment {
         apiCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                GetRecipeList.callRecipeListAPI(mScannedIngredients, mQueue, RecipeFragment.recipes);
+                GetRecipeList.callRecipeListAPI(scannedIngredients, mQueue, RecipeFragment.recipes);
                 MainActivity.moveSlideUpPanel(1);
             }
         });
@@ -86,12 +86,12 @@ public class IngredientFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-            final String msg = mScannedIngredients.get(position).getName();
+            final String msg = scannedIngredients.get(position).getName();
             ((IngredientViewHolder) holder).mTextView.setText(msg);
             ((IngredientViewHolder) holder).mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    mScannedIngredients.remove(holder.getAdapterPosition());
+                    scannedIngredients.remove(holder.getAdapterPosition());
                     refresh();
                 }
             });
@@ -99,7 +99,7 @@ public class IngredientFragment extends Fragment {
 
         @Override
         public int getItemCount() {
-            return mScannedIngredients.size();
+            return scannedIngredients.size();
         }
 
         private class IngredientViewHolder extends RecyclerView.ViewHolder {
@@ -118,7 +118,7 @@ public class IngredientFragment extends Fragment {
 
     static void refresh() {
         adapter.notifyDataSetChanged();
-        int visibility = (mScannedIngredients.size() == 0) ? View.VISIBLE : View.GONE;
+        int visibility = (scannedIngredients.size() == 0) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
     }
 
