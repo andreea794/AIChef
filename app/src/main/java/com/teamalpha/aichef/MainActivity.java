@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                 //Resume camera
                 if (isPaused)
                     pauseOrResumeCamera();
-                // TODO: Add ingredient to list.
+                IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
