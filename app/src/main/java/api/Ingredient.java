@@ -66,4 +66,9 @@ public class Ingredient implements Parcelable {
     public void writeToParcel(Parcel parcel, int i) {
         parcel.writeString(name);
     }
+
+    @Override
+    public boolean equals(Object other) {
+        return this.name.equals(((Ingredient) other).getName());
+    }
 }

@@ -116,7 +116,7 @@ public class IngredientFragment extends Fragment {
         }
     }
 
-    static void refresh() {
+    static public void refresh() {
         adapter.notifyDataSetChanged();
         int visibility = (scannedIngredients.size() == 0) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
