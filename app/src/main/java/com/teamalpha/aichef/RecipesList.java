@@ -50,20 +50,18 @@ public class RecipesList extends AppCompatActivity {
         recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
         recipesListView.setAdapter(recipesListAdapter);
 
-
-
         if(getIntent().hasExtra("selected")){
-//            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
-//            LinkedList<Recipe> result = new LinkedList<Recipe>();
-//            for(Recipe recipe: temp){
-//                result.add(recipe);
-//            }
-//            recipesListAdapter.recipesList = result;
-            List<Recipe> recipeList = new LinkedList<Recipe>();
-            recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
-            recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
-            recipesList = recipeList;
-            GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
+            ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
+            LinkedList<Recipe> result = new LinkedList<Recipe>();
+            for(Recipe recipe: temp){
+                result.add(recipe);
+            }
+            recipesListAdapter.recipesList = result;
+//            List<Recipe> recipeList = new LinkedList<Recipe>();
+//            recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
+//            recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
+//            recipesList = recipeList;
+//            GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
         }
         else{
             if (recipesList == null) {
@@ -72,6 +70,11 @@ public class RecipesList extends AppCompatActivity {
                 recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
                 recipesList = recipeList;
                 GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
+            }
+            else{
+                for(Recipe recipe : recipesList){
+                    System.out.println(recipe.getRecipeName());
+                }
             }
         }
 
