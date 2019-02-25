@@ -4,7 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Ingredient implements Parcelable {
-      final private String name;
+    final private String name;
 //    final private String amount;
 //    final private String unit;
 //    final private String instruction;
