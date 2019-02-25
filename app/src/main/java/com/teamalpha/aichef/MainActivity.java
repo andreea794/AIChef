@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     private static final int CAMERA_REQUEST_ID = 1;
     private Button mShoppingListButton;
     private Button mRecipesListButton;
+    private AIChefClassifier imageClassifier = null;
 
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
@@ -46,7 +47,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        AIChefClassifier.loadNetwork(this.getAssets(), this.getBaseContext());
+        imageClassifier = new AIChefClassifier(this.getAssets(), null);
 
         SlidingUpPanelLayout slidingUpPanelLayout = findViewById(R.id.layout_slidinguppanel);
         slidingUpPanelLayout.addPanelSlideListener(new SlidingUpPanelListener());
@@ -200,8 +201,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     @Override
     public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            if (AIChefClassifier.canCallCalssifier) {
-                AIChefClassifier.classify(data, getBaseContext(), this);
+            if (imageClassifier.canAcceptImage()) {
+                imageClassifier.classify(data, getBaseContext(), this);
             }
         }
     }
