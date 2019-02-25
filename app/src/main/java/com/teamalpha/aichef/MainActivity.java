@@ -179,21 +179,30 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         }
     }
 
+    public void validClassificationFound(final String ingredient) {
+        // First check whether camera is paused due to the search bar triggering a pop-up dialog
+        // If that's the case, discard the data completely (i.e. don't do anything)
+        if (!isPaused) {
+            if (!ingredient.equals("NOT FOUND")) {
+                // API reply is a valid ingredient
+                if (!inList(ingredient)) {
+                    // Ingredient isn't already in the list, so we can potentially add it
+                    popIngredientDialog(ingredient);
+
+                    // Pause camera on pop-up of ingredient dialog
+                    if (!isPaused)
+                        pauseOrResumeCamera();
+                }
+            }
+        }
+    }
+
     @Override
     public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            String replyFromAPI = AIChefClassifier.classify(data, getBaseContext(), this);
-
-            if (!replyFromAPI.equals("NOT FOUND")) {
-                // API reply is a valid ingredient
-                if (!inList(replyFromAPI)) {
-                    // Ingredient isn't already in the list, so we can potentially add it
-                    popIngredientDialog(replyFromAPI);
-                }
+            if (AIChefClassifier.canCallCalssifier) {
+                AIChefClassifier.classify(data, getBaseContext(), this);
             }
-
-            if (isPaused)
-                Log.e("PREVIEW", "Paused, but still in preview!");
         }
     }
 

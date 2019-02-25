@@ -183,7 +183,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
 
             Bitmap rotatedBmp = rotateBitmap(bmpout);
 
-            Log.d("FRAME","I'm sending frames.");
+            // Log.d("FRAME","I'm sending frames.");
             mListener.onPreviewUpdated(rotatedBmp, previewSize.width, previewSize.height);
 
             lastFrameTaken = now;
