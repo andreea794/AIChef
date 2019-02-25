@@ -54,15 +54,12 @@ public class RecipesList extends AppCompatActivity {
             ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
             LinkedList<Recipe> result = new LinkedList<Recipe>();
             for(Recipe recipe: temp){
+                System.out.println(recipe.getRecipeName() + recipe.getRecipeID() + recipe.getRecipeImageLink());
                 result.add(recipe);
             }
             System.out.println("inside selected");
-            recipesListAdapter.recipesList = result;
-//            List<Recipe> recipeList = new LinkedList<Recipe>();
-//            recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
-//            recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
-//            recipesList = recipeList;
-//            GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
+            RecipesListAdapter.recipesList = result;
+            GetSelectedRecipeData.callIngredientsListAPI(RecipesListAdapter.recipesList, queue, ingredientList);
         }
         else{
             if (RecipesListAdapter.recipesList.size() == 0) {
