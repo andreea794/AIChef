@@ -160,15 +160,15 @@ public class AIChefClassifier {
 
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
-        try {
-            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
-            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output_" + System.currentTimeMillis() + ".png").getAbsolutePath());
-            resizedImg.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
-            // PNG is a lossless format, the compression factor (100) is ignored
-        } catch (IOException e) {
-            e.printStackTrace();
-            Log.e("AIChefClassifier", "Error saving img");
-        }
+//        try {
+//            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
+//            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output_" + System.currentTimeMillis() + ".png").getAbsolutePath());
+//            resizedImg.compress(Bitmap.CompressFormat.PNG, 100, out); // bmp is your Bitmap instance
+//            // PNG is a lossless format, the compression factor (100) is ignored
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            Log.e("AIChefClassifier", "Error saving img");
+//        }
 
         float[][][][] inputImage = new float[1][INPUT_SIZE][INPUT_SIZE][3];
         for(int x = 0; x < INPUT_SIZE; x++) {
