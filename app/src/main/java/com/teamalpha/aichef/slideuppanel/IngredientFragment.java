@@ -47,9 +47,7 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
-        //TEST
-        scannedIngredients.add(new Ingredient("broccoli"));
-        //////
+        
         View view = inflater.inflate(R.layout.fragment_slideup_ingredient, container, false);
 
         mEmptyView = view.findViewById(R.id.tv_empty_view_ingredient);
