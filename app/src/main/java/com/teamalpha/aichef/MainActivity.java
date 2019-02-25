@@ -2,6 +2,7 @@ package com.teamalpha.aichef;
 
 import android.Manifest;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,7 +23,10 @@ import android.widget.Toast;
 
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import com.teamalpha.aichef.classifier.AIChefClassifier;
+import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
+
+import api.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
@@ -176,10 +180,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     @Override
-    public void onPreviewUpdated(byte[] data, int width, int height) {
+    public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            /* TODO: Send image data to back end. */
-            String replyFromAPI = "NOT FOUND";
+            String replyFromAPI = AIChefClassifier.classify(data);
 
             if (!replyFromAPI.equals("NOT FOUND")) {
                 // API reply is a valid ingredient
@@ -215,7 +218,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                 //Resume camera
                 if (isPaused)
                     pauseOrResumeCamera();
-                // TODO: Add ingredient to list.
+                IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
@@ -239,8 +242,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        /* TODO: check whether ingredient is already in the ingredients list. */
-        return false;
+        return IngredientFragment.scannedIngredients.contains(new Ingredient(ingredient));
     }
 
 

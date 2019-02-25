@@ -22,7 +22,7 @@ import java.util.List;
 
 public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback, Camera.PreviewCallback {
     public interface PreviewListener {
-        void onPreviewUpdated(byte[] data, int width, int height);
+        void onPreviewUpdated(Bitmap data, int width, int height);
     }
 
     PreviewListener mListener = null;
@@ -182,22 +182,14 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
             aOut.copyTo(bmpout);
 
             Bitmap rotatedBmp = rotateBitmap(bmpout);
-            byte[] image = convertBmpToByteArray(rotatedBmp);
 
             Log.d("FRAME","I'm sending frames.");
-            mListener.onPreviewUpdated(image, previewSize.width, previewSize.height);
+            mListener.onPreviewUpdated(rotatedBmp, previewSize.width, previewSize.height);
 
             lastFrameTaken = now;
         }
         // Once we are done with current frame, reset the buffer
         resetBuffer();
-    }
-
-    private byte[] convertBmpToByteArray(Bitmap bmp) {
-        ByteArrayOutputStream baos = new ByteArrayOutputStream();
-        bmp.compress(Bitmap.CompressFormat.JPEG, 90, baos);
-
-        return baos.toByteArray();
     }
 
     private Bitmap rotateBitmap(Bitmap bmp) {
