@@ -1,12 +1,21 @@
 package com.teamalpha.aichef.classifier;
 
 import android.app.Activity;
+import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
+import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+
+import com.teamalpha.aichef.MainActivity;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -103,7 +112,7 @@ public class AIChefClassifier {
      * @param image The XxY RGB image
      * @return A mapping from each object to it's calculated probability
      */
-    public static HashMap<String, Float> calculateObjectProbabilities(byte[][][] image, Context context) {
+    public static HashMap<String, Float> calculateObjectProbabilities(byte[][][] image, Context context, MainActivity activity) {
 
         Log.i("AIChefClassifier", "Calculating obj probs for img of dims: " + image.length
                 + "x" + image[0].length + "x" + image[0][0].length);
@@ -160,6 +169,28 @@ public class AIChefClassifier {
 
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
+
+        Dialog builder = new Dialog(activity);
+        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        builder.getWindow().setBackgroundDrawable(
+                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+            @Override
+            public void onDismiss(DialogInterface dialogInterface) {
+                //nothing;
+            }
+        });
+
+        ImageView imageView = new ImageView(activity);
+        imageView.setImageBitmap(resizedImg);
+        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                ViewGroup.LayoutParams.MATCH_PARENT));
+        builder.show();
+
+        Log.i("AIChefClassifier", "Showing popup");
+
+
 //        try {
 //            FileOutputStream out = new FileOutputStream(new File(context.getFilesDir(), "image_output.png"));
 //            Log.i("AIChefClassifier", new File(context.getFilesDir(), "image_output_" + System.currentTimeMillis() + ".png").getAbsolutePath());
@@ -203,7 +234,7 @@ public class AIChefClassifier {
      * @return Return the class with the highest probability if it is above the threshold, otherwise return "NOT FOUND"
      * MIN_OBJ_CHANCE culled
      */
-    public static String classify(Bitmap bmp, Context context) {
+    public static String classify(Bitmap bmp, Context context, MainActivity activity) {
 
         Log.i("AIChefClassifier", "Classifying img...");
 
@@ -218,7 +249,7 @@ public class AIChefClassifier {
             }
         }
 
-        HashMap<String, Float> objProbs = calculateObjectProbabilities(image, context);
+        HashMap<String, Float> objProbs = calculateObjectProbabilities(image, context, activity);
 
         float highestProb = 0;
         String highestKey = null;
@@ -229,6 +260,8 @@ public class AIChefClassifier {
                 highestKey = key;
             }
         }
+
+        Log.i("AIChefClassifier", highestKey + " : " + highestProb);
 
         return highestProb >= MIN_OBJ_CHANCE ? highestKey : "NOT FOUND";
     }
