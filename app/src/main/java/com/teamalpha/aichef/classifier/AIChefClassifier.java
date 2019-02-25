@@ -223,17 +223,17 @@ public class AIChefClassifier implements Runnable {
         Bitmap resizedImg = Bitmap.createScaledBitmap(img, INPUT_SIZE, INPUT_SIZE, false);
 
 
-        Dialog builder = new Dialog(activity);
-        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
-        builder.getWindow().setBackgroundDrawable(
-                new ColorDrawable(android.graphics.Color.TRANSPARENT));
-        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
-            @Override
-            public void onDismiss(DialogInterface dialogInterface) {
-                //nothing;
-            }
-        });
-
+//        Dialog builder = new Dialog(activity);
+//        builder.requestWindowFeature(Window.FEATURE_NO_TITLE);
+//        builder.getWindow().setBackgroundDrawable(
+//                new ColorDrawable(android.graphics.Color.TRANSPARENT));
+//        builder.setOnDismissListener(new DialogInterface.OnDismissListener() {
+//            @Override
+//            public void onDismiss(DialogInterface dialogInterface) {
+//                //nothing;
+//            }
+//        });
+//
 //        ImageView imageView = new ImageView(activity);
 //        imageView.setImageBitmap(resizedImg);
 //        builder.addContentView(imageView, new RelativeLayout.LayoutParams(
