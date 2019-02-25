@@ -1,6 +1,7 @@
 package com.teamalpha.aichef;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -104,6 +105,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             @Override
             public void onClick(View v) {
                 /* TODO: Switch to shopping list page. */
+                Intent intent = new Intent(MainActivity.this, ShoppingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -112,6 +115,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             @Override
             public void onClick(View v) {
                 /* TODO: Switch to recipes list page. */
+                Intent intent = new Intent(MainActivity.this, RecipesList.class);
+                startActivity(intent);
             }
         });
 
@@ -228,7 +233,10 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                 //Resume camera
                 if (isPaused)
                     pauseOrResumeCamera();
+
+                // Add ingredient and refresh the list
                 IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
+                IngredientFragment.refresh();
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
