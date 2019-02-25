@@ -212,9 +212,9 @@ public class AIChefClassifier {
         for(int x = 0; x < bmp.getWidth(); x++) {
             for(int y = 0; y < bmp.getHeight(); y++) {
                 int colour = bmp.getPixel(x, y);
-                image[x][y][0] = (byte) ((colour << 16) & 0xff);
-                image[x][y][1] = (byte) ((colour << 8) & 0xff);
-                image[x][y][2] = (byte) ((colour << 0) & 0xff);
+                image[x][y][0] = (byte) ((colour >> 16) & 0xff);
+                image[x][y][1] = (byte) ((colour >> 8) & 0xff);
+                image[x][y][2] = (byte) ((colour >> 0) & 0xff);
             }
         }
 
