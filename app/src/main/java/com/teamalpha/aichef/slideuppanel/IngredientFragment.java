@@ -39,8 +39,6 @@ public class IngredientFragment extends Fragment {
 
         super.onCreate(savedInstanceState);
         scannedIngredients = new ArrayList<String>();
-        scannedIngredients.add("tomato");
-        scannedIngredients.add("carrot");
         mQueue = Volley.newRequestQueue(getContext());
         mQueue.addRequestFinishedListener(new RecipeRequestFinishedListener());
     }

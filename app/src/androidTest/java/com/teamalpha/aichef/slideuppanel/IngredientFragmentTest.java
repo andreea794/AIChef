@@ -9,7 +9,6 @@ import org.junit.runner.RunWith;
 
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import api.Ingredient;
 
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -56,7 +55,7 @@ public class IngredientFragmentTest {
     }
 
     public static void addDummyIngredient() throws Throwable {
-        IngredientFragment.mScannedIngredients.add(new Ingredient("Ingredient"));
+        IngredientFragment.scannedIngredients.add("Ingredient");
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
