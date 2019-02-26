@@ -29,7 +29,7 @@ public class RecipesList extends AppCompatActivity {
 
     @Override
     protected void onDestroy(){
-        recipesListAdapter.executor.shutdownNow();
+        recipesListAdapter.executor.shutdown();
         super.onDestroy();
     }
 
@@ -47,7 +47,6 @@ public class RecipesList extends AppCompatActivity {
         /**
          * attach the current recipe list to its adapter
          */
-
         recipesListView = (ListView)findViewById(R.id.recipesList);
         recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
         recipesListView.setAdapter(recipesListAdapter);
@@ -56,7 +55,6 @@ public class RecipesList extends AppCompatActivity {
          * Make an API call to populate the ingredients List if passed new recipes, otherwise
          * display old recipes
          */
-
         if(getIntent().hasExtra("selected")){
             ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
             LinkedList<Recipe> result = new LinkedList<Recipe>();
@@ -88,15 +86,12 @@ public class RecipesList extends AppCompatActivity {
             public void onClick(View view) {
                 //start a shopping list activity and pass in the ingredients list to buy
                 ArrayList<String> ingredients = new ArrayList<String>();
-
                 for(String ingredient : ingredientList){
                     String name = ingredient;
                     name = (Character.toString(name.charAt(0)).toUpperCase() + name.substring(1));
                     ingredients.add(name);
-
                 }
                 Intent shoppingList = new Intent(getApplicationContext(), ShoppingActivity.class);
-                System.out.println(ingredients);
                 shoppingList.putStringArrayListExtra("Ingredients", ingredients);
                 startActivity(shoppingList);
             }
