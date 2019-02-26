@@ -24,11 +24,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import api.GetRecipeList;
-import api.Ingredient;
+
+import static com.teamalpha.aichef.slideuppanel.RecipeFragment.spinner;
 
 public class IngredientFragment extends Fragment {
 
-    public static List<Ingredient> scannedIngredients;
+    public static List<String> scannedIngredients;
     static IngredientAdapter adapter;
     static LinearLayout mEmptyView;
     RequestQueue mQueue;
@@ -36,7 +37,9 @@ public class IngredientFragment extends Fragment {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        scannedIngredients = new ArrayList<>();
+        scannedIngredients = new ArrayList<String>();
+        scannedIngredients.add("tomato");
+        scannedIngredients.add("carrot");
         mQueue = Volley.newRequestQueue(getContext());
         mQueue.addRequestFinishedListener(new RecipeRequestFinishedListener());
     }
@@ -61,10 +64,13 @@ public class IngredientFragment extends Fragment {
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
+
         Button apiCallButton = view.findViewById(R.id.button_get_recipe);
         apiCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spinner.setVisibility(View.VISIBLE);
+                RecipeFragment.refresh();
                 GetRecipeList.callRecipeListAPI(scannedIngredients, mQueue, RecipeFragment.recipes);
                 MainActivity.moveSlideUpPanel(1);
             }
@@ -86,7 +92,7 @@ public class IngredientFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-            final String msg = scannedIngredients.get(position).getName();
+            final String msg = scannedIngredients.get(position);
             ((IngredientViewHolder) holder).mTextView.setText(msg);
             ((IngredientViewHolder) holder).mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,6 +135,7 @@ public class IngredientFragment extends Fragment {
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest> {
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request) {
+            spinner.setVisibility(View.GONE);
             RecipeFragment.refresh();
         }
     }

@@ -2,10 +2,9 @@ package com.teamalpha.aichef;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -15,20 +14,16 @@ import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import api.GetRecipeList;
 import api.GetSelectedRecipeData;
-import api.Ingredient;
 import api.Recipe;
 
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
     //List<Recipe> recipesList;
-    List<Ingredient> ingredientList;
+    List<String> ingredientList;
     boolean ingredientListAPICalled = false;
     static RecipesListAdapter recipesListAdapter;
 
@@ -42,7 +37,7 @@ public class RecipesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
         Resources res = getResources();
-        ingredientList = new LinkedList<Ingredient>();
+        ingredientList = new LinkedList<String>();
 
         recipesListView = (ListView)findViewById(R.id.recipesList);
         recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
@@ -67,8 +62,8 @@ public class RecipesList extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 ArrayList<String> ingredients = new ArrayList<String>();
-                for(Ingredient ingredient : ingredientList){
-                    ingredients.add(ingredient.getName());
+                for(String ingredient : ingredientList){
+                    ingredients.add(ingredient);
                 }
                 Intent shoppingList = new Intent(getApplicationContext(), ShoppingActivity.class);
                 shoppingList.putStringArrayListExtra("Ingredients", ingredients);

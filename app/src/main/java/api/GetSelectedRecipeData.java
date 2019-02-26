@@ -27,9 +27,9 @@ public class GetSelectedRecipeData {
 
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
-    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<Ingredient> shoppingList) {
+    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<String> shoppingList) {
 
-        final Set<Ingredient> allIngredients = new HashSet<>();
+        final Set<String> allIngredients = new HashSet<>();
 
         for(int i=0; i<selectedRecipes.size(); i++) {
 
@@ -52,8 +52,7 @@ public class GetSelectedRecipeData {
                                 curIngdList = (JSONArray) responseObj.get("extendedIngredients");
 //                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
                                 for (int c = 0; c < curIngdList.length(); c++) {
-                                    String curIngdName = (String) curIngdList.getJSONObject(c).get("name");
-                                    Ingredient newIngredient = new Ingredient(curIngdName);
+                                    String newIngredient = (String) curIngdList.getJSONObject(c).get("name");
 //                                    System.out.println(newIngredient.getName());
                                     allIngredients.add(newIngredient);
 //                                    System.out.println(allIngredients.size());

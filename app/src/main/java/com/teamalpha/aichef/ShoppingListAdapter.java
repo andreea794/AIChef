@@ -10,19 +10,15 @@ import android.widget.CheckedTextView;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import api.Ingredient;
-import api.Recipe;
-
 public class ShoppingListAdapter extends BaseAdapter {
-    static List<Ingredient> ingredientList;
+    static List<String> ingredientList;
     private Context c;
     private LayoutInflater mInflater;
     private Resources res;
 
-    public ShoppingListAdapter(Context c, Resources res, List<Ingredient> ingredientList){
+    public ShoppingListAdapter(Context c, Resources res, List<String> ingredientList){
         this.c = c;
         this.res = res;
         this.ingredientList = ingredientList;
@@ -55,10 +51,10 @@ public class ShoppingListAdapter extends BaseAdapter {
         else{
             v = view;
         }
-        Ingredient ingredient = ingredientList.get(i);
+        String ingredient = ingredientList.get(i);
         final ImageView recipeImg= (ImageView)v.findViewById(R.id.recipeImg);
         final TextView recipeText = (CheckedTextView)v.findViewById(R.id.ingredientText);
-        recipeText.setText(ingredientList.get(i).getName());
+        recipeText.setText(ingredient);
 
 
         return v;

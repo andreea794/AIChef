@@ -26,8 +26,6 @@ import com.teamalpha.aichef.classifier.AIChefClassifier;
 import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
-import api.Ingredient;
-
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
     static ViewPager mViewPager;
@@ -228,7 +226,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                 //Resume camera
                 if (isPaused)
                     pauseOrResumeCamera();
-                IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
+                IngredientFragment.scannedIngredients.add(ingredient);
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
@@ -252,7 +250,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        return IngredientFragment.scannedIngredients.contains(new Ingredient(ingredient));
+        return IngredientFragment.scannedIngredients.contains(ingredient);
     }
 
 

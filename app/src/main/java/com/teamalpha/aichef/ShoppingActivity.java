@@ -13,10 +13,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import api.GetSelectedRecipeData;
-import api.Ingredient;
 import api.Recipe;
 
 public class ShoppingActivity extends AppCompatActivity {
@@ -31,12 +28,12 @@ public class ShoppingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
         Resources res = getResources();
-        List<Ingredient> ingredientsList = new LinkedList<Ingredient>();
+        List<String> ingredientsList = new LinkedList<>();
 
         if(getIntent().hasExtra("Ingredients")){
             ArrayList<String> temp = (ArrayList)getIntent().getExtras().getStringArrayList("Ingredients");
             for(String id : temp){
-                ingredientsList.add(new Ingredient(id));
+                ingredientsList.add(id);
             }
         }
 
