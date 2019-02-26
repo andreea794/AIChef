@@ -27,6 +27,12 @@ import com.teamalpha.aichef.classifier.AIChefClassifier;
 import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.Scanner;
+
 import api.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
@@ -77,16 +83,16 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                     wrongFormat.show();
                     clearSearchView();
                 } else {
-                    // Make input all lowercase and replace whitespace with underline
-                    query = query.toLowerCase().replaceAll("\\s+", "_");
-                    /* TODO: Send query to back end and potentially reformat ingredient string before adding to the list. */
-                    String replyFromApi = "some nicely formatted ingredient";
-                    if (!replyFromApi.equals("NOT FOUND")) {
-                        if (!isPaused)
-                            pauseOrResumeCamera();
-                        popIngredientDialog(replyFromApi);
-                    }
-                    else
+                    // Make input all lowercase and replace multiple whitespaces with just one
+                    query = query.toLowerCase().replaceAll("\\s+", " ");
+                    if (validIngredient(query)) {
+                        if (!inList(query)) {
+                            if (!isPaused)
+                                pauseOrResumeCamera();
+                            popIngredientDialog(query);
+                        } else
+                            Toast.makeText(MainActivity.this, "Ingredient already in list", Toast.LENGTH_SHORT).show();
+                    } else
                         Toast.makeText(MainActivity.this, "Ingredient not found", Toast.LENGTH_SHORT).show();
                     clearSearchView();
                 }
@@ -104,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO: Switch to shopping list page. */
                 Intent intent = new Intent(MainActivity.this, ShoppingActivity.class);
                 startActivity(intent);
             }
@@ -114,7 +119,6 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO: Switch to recipes list page. */
                 Intent intent = new Intent(MainActivity.this, RecipesList.class);
                 startActivity(intent);
             }
@@ -184,6 +188,22 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             }
         }
     }
+
+    private boolean validIngredient(final String ingredient) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getAssets().open("labels.mp3")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(ingredient))
+                    return true;
+            }
+            return false;
+        } catch (IOException e) {
+            Log.e("FILE", "Asset file not found.");
+        }
+        return false;
+    }
+
 
     public void validClassificationFound(final String ingredient) {
         // First check whether camera is paused due to the search bar triggering a pop-up dialog
