@@ -33,6 +33,7 @@ public class ShoppingActivity extends AppCompatActivity {
         Resources res = getResources();
         List<Ingredient> ingredientsList = new LinkedList<Ingredient>();
 
+        //Obtain the ingredients passed by recipesList
         if(getIntent().hasExtra("Ingredients")){
             ArrayList<String> temp = (ArrayList)getIntent().getExtras().getStringArrayList("Ingredients");
             for(String id : temp){
@@ -49,18 +50,17 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingListView.setAdapter(adapter);
 
 
-
-        //GetSelectedRecipeData.callIngredientsListAPI(shoppingList, queue, ShoppingListAdapter.ingredientList);
     }
 
 
-
+    /*
+    Callback mechanism to refresh the shopping list upon the return of the API call
+     */
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest>{
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request){
             adapter.notifyDataSetChanged();
             RecipesList.recipesListAdapter.notifyDataSetChanged();
         }
-
     }
 }

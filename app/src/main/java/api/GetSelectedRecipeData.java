@@ -20,7 +20,7 @@ import java.util.Set;
 
 //front end need to check whether the list mRecipe is empty: if it is, show prompt for the users to select from the suggested recipes
 public class GetSelectedRecipeData {
-    private static int counter = 0;
+    private static int counter;
     private static JSONObject responseObj;
 
     private static String url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/<recipeID>/information";
@@ -28,7 +28,7 @@ public class GetSelectedRecipeData {
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
     public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<Ingredient> shoppingList) {
-
+        counter = 0;
         final Set<Ingredient> allIngredients = new HashSet<>();
 
         for(int i=0; i<selectedRecipes.size(); i++) {
@@ -63,7 +63,9 @@ public class GetSelectedRecipeData {
                             }
                             //check whether it's the last api call
                             counter ++;
-                            if(counter == 0) shoppingList.clear();
+                            if(counter == 0) {
+                                shoppingList.clear();
+                            }
                             else if(counter == selectedRecipes.size()) {
                                 shoppingList.addAll(allIngredients);
 //                                System.out.println("ShoppingList Size after reaching the last : " + allIngredients.size());

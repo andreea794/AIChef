@@ -45,7 +45,6 @@ public class ShoppingListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int i, View view, ViewGroup viewGroup) {
-        System.out.println("Recipe list size now: " + ingredientList.size());
         View v;
         if(view == null){
             v = mInflater.inflate(R.layout.activity_shopping_list_layout, null);
@@ -53,12 +52,10 @@ public class ShoppingListAdapter extends BaseAdapter {
         else{
             v = view;
         }
-        Ingredient ingredient = ingredientList.get(i);
-        final ImageView recipeImg= (ImageView)v.findViewById(R.id.recipeImg);
+
+        //Write the ingredient name on each list entry
         final TextView recipeText = (CheckedTextView)v.findViewById(R.id.ingredientText);
         recipeText.setText(ingredientList.get(i).getName());
-
-
         return v;
     }
 }

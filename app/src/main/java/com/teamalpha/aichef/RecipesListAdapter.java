@@ -99,12 +99,16 @@ public class RecipesListAdapter extends BaseAdapter {
         final ImageView recipeImg= (ImageView)v.findViewById(R.id.recipeImg);
         final CheckedTextView recipeText = (CheckedTextView)v.findViewById(R.id.recipeText);
         String web = recipe.getRecipeImageLink();
+
+        //If the URL is null, that means the API call has not returned, hence
+        //We return a view without the URL
         if(web == null){
             return v;
         }
         String[] substring = web.split("\\.");
         String file_format = substring[substring.length-1];
-        //File imgFile = new File(System.getProperty("user.dir") + "\\ImageResource\\" + recipe.getRecipeID()+"."+file_format);
+
+        //Download the recipe image file, using threads
         ContextWrapper contextWrapper = new ContextWrapper(c);
         File directory = contextWrapper.getDir(c.getFilesDir().getName(), Context.MODE_PRIVATE);
         File imgFile =  new File(directory, recipe.getRecipeID() + file_format);
@@ -146,15 +150,23 @@ public class RecipesListAdapter extends BaseAdapter {
         recipeText.setText(recipesList.get(i).getRecipeName());
         final String url = recipe.getRecipeURL();
         Button moreButton = (Button)v.findViewById(R.id.moreButton);
+
+        //Make the button non-clickable if the thread has not finished download
         if(url == null){
             moreButton.setEnabled(false);
         }
         else{
             moreButton.setEnabled(true);
         }
+
+
+        /*
+        Button to go to the recipe link
+         */
         moreButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 Intent i = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(url));
                 c.startActivity(i);

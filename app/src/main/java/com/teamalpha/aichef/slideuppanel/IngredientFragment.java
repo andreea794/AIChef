@@ -35,6 +35,7 @@ public class IngredientFragment extends Fragment {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         scannedIngredients = new ArrayList<>();
         mQueue = Volley.newRequestQueue(getContext());
@@ -47,7 +48,7 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
-        
+
         View view = inflater.inflate(R.layout.fragment_slideup_ingredient, container, false);
 
         mEmptyView = view.findViewById(R.id.tv_empty_view_ingredient);

@@ -31,7 +31,7 @@ import static com.teamalpha.aichef.RecipesListAdapter.recipesList;
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
     //List<Recipe> recipesList;
-    static List<Ingredient> ingredientList;
+    static List<Ingredient> ingredientList = new LinkedList<Ingredient>();
     static RecipesListAdapter recipesListAdapter;
 
 
@@ -44,40 +44,46 @@ public class RecipesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
         Resources res = getResources();
-        ingredientList = new LinkedList<Ingredient>();
+//        ingredientList = new LinkedList<Ingredient>();
+
+        /**
+         * attach the current recipe list to its adapter
+         */
 
         recipesListView = (ListView)findViewById(R.id.recipesList);
         recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
         recipesListView.setAdapter(recipesListAdapter);
 
+        /**
+         * Make an API call to populate the ingredients List if passed new recipes, otherwise
+         * display old recipes
+         */
+
         if(getIntent().hasExtra("selected")){
             ArrayList<Recipe> temp = getIntent().getExtras().getParcelableArrayList("selected");
             LinkedList<Recipe> result = new LinkedList<Recipe>();
             for(Recipe recipe: temp){
-                System.out.println(recipe.getRecipeName() + recipe.getRecipeID() + recipe.getRecipeImageLink());
+                System.out.println("Passed in recipe: " + recipe.getRecipeName() + recipe.getRecipeID() + recipe.getRecipeImageLink());
                 result.add(recipe);
             }
-            System.out.println("inside selected");
             RecipesListAdapter.recipesList = result;
-            GetSelectedRecipeData.callIngredientsListAPI(RecipesListAdapter.recipesList, queue, ingredientList);
+            System.out.println("Ingredient list before API call: " + RecipesList.ingredientList);
+            GetSelectedRecipeData.callIngredientsListAPI(RecipesListAdapter.recipesList, queue, RecipesList.ingredientList);
         }
         else{
             if (RecipesListAdapter.recipesList.size() == 0) {
                 List<Recipe> recipeList = new LinkedList<Recipe>();
+                //test data
                 recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
                 recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
                 RecipesListAdapter.recipesList = recipeList;
-                System.out.println("im here");
-                GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, ingredientList);
-            }
-            else{
-                System.out.println("inside else of non-selected");
-                for(Recipe recipe : RecipesListAdapter.recipesList){
-                    System.out.println(recipe.getRecipeName());
-                }
+                GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, RecipesList.ingredientList);
             }
         }
 
+        /**
+         * Button to move to the shopping list
+         */
         Button generateIngredientsBtn  = (Button)findViewById(R.id.spawnIngredientsList);
         generateIngredientsBtn.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -85,9 +91,12 @@ public class RecipesList extends AppCompatActivity {
                 //start a shopping list activity and pass in the ingredients list to buy
                 ArrayList<String> ingredients = new ArrayList<String>();
                 for(Ingredient ingredient : ingredientList){
-                    ingredients.add(ingredient.getName());
+                    String name = ingredient.getName();
+                    name = (Character.toString(name.charAt(0)).toUpperCase() + name.substring(1));
+                    ingredients.add(name);
                 }
                 Intent shoppingList = new Intent(getApplicationContext(), ShoppingActivity.class);
+                System.out.println(ingredients);
                 shoppingList.putStringArrayListExtra("Ingredients", ingredients);
                 startActivity(shoppingList);
             }
@@ -96,7 +105,10 @@ public class RecipesList extends AppCompatActivity {
 
     }
 
-
+    /**
+     * Callback mechanism to refresh the recipe list and shopping list, if the user is currently in
+     * the shopping list
+     */
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest>{
 
         RequestQueue queue = null;
@@ -106,12 +118,14 @@ public class RecipesList extends AppCompatActivity {
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request){
             System.out.println("Finished ingredients API");
+            System.out.println(RecipesList.ingredientList);
             recipesListAdapter.notifyDataSetChanged();
             if(ShoppingActivity.adapter != null){
                 //update the shopping list whenever the API call returns
-                ShoppingActivity.adapter.ingredientList = ingredientList;
+                ShoppingActivity.adapter.ingredientList = RecipesList.ingredientList;
                 ShoppingActivity.adapter.notifyDataSetChanged();
             }
+
         }
     }
 
