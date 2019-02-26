@@ -2,10 +2,9 @@ package com.teamalpha.aichef;
 
 import android.content.Intent;
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 
@@ -13,27 +12,26 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.Volley;
-import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
-import api.GetRecipeList;
 import api.GetSelectedRecipeData;
-import api.Ingredient;
 import api.Recipe;
-
-import static com.teamalpha.aichef.RecipesListAdapter.recipesList;
 
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
     //List<Recipe> recipesList;
-    static List<Ingredient> ingredientList = new LinkedList<Ingredient>();
+
+    static List<String> ingredientList = new LinkedList<String>();
     static RecipesListAdapter recipesListAdapter;
 
+    @Override
+    protected void onDestroy(){
+        recipesListAdapter.executor.shutdownNow();
+        super.onDestroy();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -90,10 +88,12 @@ public class RecipesList extends AppCompatActivity {
             public void onClick(View view) {
                 //start a shopping list activity and pass in the ingredients list to buy
                 ArrayList<String> ingredients = new ArrayList<String>();
-                for(Ingredient ingredient : ingredientList){
-                    String name = ingredient.getName();
+
+                for(String ingredient : ingredientList){
+                    String name = ingredient;
                     name = (Character.toString(name.charAt(0)).toUpperCase() + name.substring(1));
                     ingredients.add(name);
+
                 }
                 Intent shoppingList = new Intent(getApplicationContext(), ShoppingActivity.class);
                 System.out.println(ingredients);

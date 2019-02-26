@@ -1,27 +1,23 @@
 package com.teamalpha.aichef;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import java.util.LinkedList;
 import java.util.List;
 
-import api.Ingredient;
-import api.Recipe;
-
 public class ShoppingListAdapter extends BaseAdapter {
-    static List<Ingredient> ingredientList;
+    static List<String> ingredientList;
     private Context c;
     private LayoutInflater mInflater;
 
-    public ShoppingListAdapter(List<Ingredient> ingredientList, Context c){
+
+    public ShoppingListAdapter(List<String> ingredientList, Context c){
+
         this.c = c;
         this.ingredientList = ingredientList;
         this.mInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -53,9 +49,12 @@ public class ShoppingListAdapter extends BaseAdapter {
             v = view;
         }
 
+
         //Write the ingredient name on each list entry
+        String ingredient = ingredientList.get(i);
         final TextView recipeText = (CheckedTextView)v.findViewById(R.id.ingredientText);
-        recipeText.setText(ingredientList.get(i).getName());
+        recipeText.setText(ingredient);
+
         return v;
     }
 }

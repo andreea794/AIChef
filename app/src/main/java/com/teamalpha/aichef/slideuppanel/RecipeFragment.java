@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.teamalpha.aichef.R;
@@ -28,6 +29,7 @@ public class RecipeFragment extends Fragment {
     static List<Recipe> recipes;
     static RecipeAdapter adapter;
     private static LinearLayout mEmptyView;
+    public static ProgressBar spinner;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,7 +39,7 @@ public class RecipeFragment extends Fragment {
 
     public static void refresh() {
         adapter.notifyDataSetChanged();
-        int visibility = (recipes.size() == 0) ? View.VISIBLE : View.GONE;
+        int visibility = (recipes.size() == 0 && spinner.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
     }
 
@@ -57,6 +59,9 @@ public class RecipeFragment extends Fragment {
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
+        spinner = view.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
 
         Button selectionButton = view.findViewById(R.id.button_show_selected);
         selectionButton.setOnClickListener(new View.OnClickListener() {

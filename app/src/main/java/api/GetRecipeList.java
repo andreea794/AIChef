@@ -35,7 +35,7 @@ public class GetRecipeList {
      * @param mQueue             the RequestQueue of the calling Context
      * @param recipeList         the recipe list to be populated with recipe data managed by the calling context
      */
-    public static void callRecipeListAPI(List<Ingredient> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList) {
+    public static void callRecipeListAPI(List<String> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList) {
         //need to have some way to pass the name from the scannedIngredients to the url
         final List<Recipe> mRecipeList = new ArrayList<>();
 
@@ -43,8 +43,8 @@ public class GetRecipeList {
 
         for (int i = 0; i < scannedIngredients.size(); i++) {
             if (i != scannedIngredients.size() - 1)
-                curURL = curURL + scannedIngredients.get(i).getName() + "%2C";
-            else curURL = curURL + scannedIngredients.get(i).getName();
+                curURL = curURL + scannedIngredients.get(i) + "%2C";
+            else curURL = curURL + scannedIngredients.get(i);
         }
         System.out.println(curURL);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.GET, curURL, null,
@@ -60,7 +60,6 @@ public class GetRecipeList {
                             try {
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
 //                                System.out.println(curRJObj.toString());
-                                List<Ingredient> curIgds = new ArrayList<>();//initialise an empty list to input ingredients so that can add ingredients
                                 Recipe curRecipe = new Recipe(curRJObj.getString("title"), curRJObj.getString("id"), curRJObj.getString("image"));
                                 mRecipeList.add(curRecipe);
                                 //add in the ingredient list in the later functions which will then be called by the recipe-list UI

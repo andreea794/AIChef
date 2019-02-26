@@ -31,7 +31,6 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
-import api.Ingredient;
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
@@ -253,7 +252,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                     pauseOrResumeCamera();
 
                 // Add ingredient and refresh the list
-                IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
+                IngredientFragment.scannedIngredients.add(ingredient);
                 IngredientFragment.refresh();
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
@@ -278,7 +277,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        return IngredientFragment.scannedIngredients.contains(new Ingredient(ingredient));
+        return IngredientFragment.scannedIngredients.contains(ingredient);
     }
 
 
