@@ -20,16 +20,17 @@ import java.util.Set;
 
 //front end need to check whether the list mRecipe is empty: if it is, show prompt for the users to select from the suggested recipes
 public class GetSelectedRecipeData {
-    private static int counter = 0;
+    private static int counter;
     private static JSONObject responseObj;
 
     private static String url = "https://spoonacular-recipe-food-nutrition-v1.p.rapidapi.com/recipes/<recipeID>/information";
 
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
-    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<Ingredient> shoppingList) {
 
-        final Set<Ingredient> allIngredients = new HashSet<>();
+    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<String> shoppingList) {
+        counter = -1;
+        final Set<String> allIngredients = new HashSet<>();
 
         for(int i=0; i<selectedRecipes.size(); i++) {
 
@@ -52,8 +53,7 @@ public class GetSelectedRecipeData {
                                 curIngdList = (JSONArray) responseObj.get("extendedIngredients");
 //                            System.out.println("Number of ingredients in the current Recipe: " + curIngdList.length());
                                 for (int c = 0; c < curIngdList.length(); c++) {
-                                    String curIngdName = (String) curIngdList.getJSONObject(c).get("name");
-                                    Ingredient newIngredient = new Ingredient(curIngdName);
+                                    String newIngredient = (String) curIngdList.getJSONObject(c).get("name");
 //                                    System.out.println(newIngredient.getName());
                                     allIngredients.add(newIngredient);
 //                                    System.out.println(allIngredients.size());
@@ -63,8 +63,10 @@ public class GetSelectedRecipeData {
                             }
                             //check whether it's the last api call
                             counter ++;
-                            if(counter == 0) shoppingList.clear();
-                            else if(counter == selectedRecipes.size()) {
+                            if(counter == 0) {
+                                shoppingList.clear();
+                            }
+                            else if(counter == selectedRecipes.size()-1) {
                                 shoppingList.addAll(allIngredients);
 //                                System.out.println("ShoppingList Size after reaching the last : " + allIngredients.size());
                             }

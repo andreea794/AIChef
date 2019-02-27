@@ -9,7 +9,6 @@ public class Recipe implements Parcelable {
     final private String recipeImageLink;
     //cant make recipe webpage url final as it has to be set in the later stage
     private String recipeURL;
-    //final private List<Ingredient> ingredients;
 
 
     //-------------GETTERS-----------//
@@ -30,12 +29,6 @@ public class Recipe implements Parcelable {
     public String getRecipeImageLink(){
         return recipeImageLink;
     }
-
-
-//    public List<Ingredient> getIngredients(){
-//        return ingredients;
-//    }
-
 
     //-------------SETTERS----------------//
     public Recipe(String name, String id, String image){

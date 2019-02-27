@@ -1,19 +1,20 @@
 package com.teamalpha.aichef;
 
 import android.Manifest;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.design.widget.Snackbar;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.RequiresApi;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentPagerAdapter;
+import androidx.core.content.ContextCompat;
+import androidx.viewpager.widget.ViewPager;
+import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -26,7 +27,10 @@ import com.teamalpha.aichef.classifier.AIChefClassifier;
 import com.teamalpha.aichef.slideuppanel.IngredientFragment;
 import com.teamalpha.aichef.slideuppanel.IngredientPagerAdapter;
 
-import api.Ingredient;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 
 public class MainActivity extends AppCompatActivity implements CameraPreview.PreviewListener {
     FragmentPagerAdapter mAdapter;
@@ -76,16 +80,16 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                     wrongFormat.show();
                     clearSearchView();
                 } else {
-                    // Make input all lowercase and replace whitespace with underline
-                    query = query.toLowerCase().replaceAll("\\s+", "_");
-                    /* TODO: Send query to back end and potentially reformat ingredient string before adding to the list. */
-                    String replyFromApi = "some nicely formatted ingredient";
-                    if (!replyFromApi.equals("NOT FOUND")) {
-                        if (!isPaused)
-                            pauseOrResumeCamera();
-                        popIngredientDialog(replyFromApi);
-                    }
-                    else
+                    // Make input all lowercase and replace multiple whitespaces with just one
+                    query = query.toLowerCase().replaceAll("\\s+", " ");
+                    if (validIngredient(query)) {
+                        if (!inList(query)) {
+                            if (!isPaused)
+                                pauseOrResumeCamera();
+                            popIngredientDialog(query);
+                        } else
+                            Toast.makeText(MainActivity.this, "Ingredient already in list", Toast.LENGTH_SHORT).show();
+                    } else
                         Toast.makeText(MainActivity.this, "Ingredient not found", Toast.LENGTH_SHORT).show();
                     clearSearchView();
                 }
@@ -103,7 +107,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO: Switch to shopping list page. */
+                Intent intent = new Intent(MainActivity.this, ShoppingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -111,7 +116,8 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /* TODO: Switch to recipes list page. */
+                Intent intent = new Intent(MainActivity.this, RecipesList.class);
+                startActivity(intent);
             }
         });
 
@@ -153,6 +159,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
 
         // Create preview and set it as the content of the frame
         mPreview = new CameraPreview(this);
+
         mCamFrame.addView(mPreview);
 
         mSearchView.bringToFront();
@@ -179,6 +186,22 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             }
         }
     }
+
+    private boolean validIngredient(final String ingredient) {
+        try {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(this.getAssets().open("labels.mp3")));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                if (line.equals(ingredient))
+                    return true;
+            }
+            return false;
+        } catch (IOException e) {
+            Log.e("FILE", "Asset file not found.");
+        }
+        return false;
+    }
+
 
     public void validClassificationFound(final String ingredient) {
         // First check whether camera is paused due to the search bar triggering a pop-up dialog
@@ -228,7 +251,10 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                 //Resume camera
                 if (isPaused)
                     pauseOrResumeCamera();
-                IngredientFragment.scannedIngredients.add(new Ingredient(ingredient));
+
+                // Add ingredient and refresh the list
+                IngredientFragment.scannedIngredients.add(ingredient);
+                IngredientFragment.refresh();
 
                 Toast.makeText(MainActivity.this, ingredient + " added", Toast.LENGTH_SHORT).show();
             }
@@ -252,7 +278,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     }
 
     private boolean inList(String ingredient) {
-        return IngredientFragment.scannedIngredients.contains(new Ingredient(ingredient));
+        return IngredientFragment.scannedIngredients.contains(ingredient);
     }
 
 

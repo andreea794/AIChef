@@ -1,18 +1,18 @@
 package com.teamalpha.aichef.slideuppanel;
 
-
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.teamalpha.aichef.R;
@@ -28,17 +28,29 @@ public class RecipeFragment extends Fragment {
     static List<Recipe> recipes;
     static RecipeAdapter adapter;
     private static LinearLayout mEmptyView;
+    public static ProgressBar spinner;
+    static RecyclerView recyclerView;
 
     @Override
+
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         recipes = new ArrayList<>();
     }
 
     public static void refresh() {
+        clearSelections();
         adapter.notifyDataSetChanged();
-        int visibility = (recipes.size() == 0) ? View.VISIBLE : View.GONE;
+        int visibility = (recipes.size() == 0 && spinner.getVisibility() == View.GONE) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
+    }
+
+    public static void clearSelections() {
+        for (int i = 0; i < recyclerView.getChildCount(); i++) {
+            RecipeAdapter.RecipeViewHolder holder = (RecipeAdapter.RecipeViewHolder) recyclerView.findViewHolderForAdapterPosition(i);
+            holder.selected = false;
+            holder.itemView.findViewById(R.id.iv_add_recipe).setVisibility(View.INVISIBLE);
+        }
     }
 
     @Nullable
@@ -50,13 +62,16 @@ public class RecipeFragment extends Fragment {
         if (recipes.size() == 0) mEmptyView.setVisibility(View.VISIBLE);
 
         RecyclerView.LayoutManager layoutManager = new LinearLayoutManager(getContext());
-        final RecyclerView recyclerView = view.findViewById(R.id.rv_recipes_frag);
+        recyclerView = view.findViewById(R.id.rv_recipes_frag);
         recyclerView.setLayoutManager(layoutManager);
 
         adapter = new RecipeAdapter();
         recyclerView.setAdapter(adapter);
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
+
+        spinner = view.findViewById(R.id.progressBar);
+        spinner.setVisibility(View.GONE);
 
         Button selectionButton = view.findViewById(R.id.button_show_selected);
         selectionButton.setOnClickListener(new View.OnClickListener() {

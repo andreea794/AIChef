@@ -1,7 +1,7 @@
 package com.teamalpha.aichef;
 
 import android.content.res.Resources;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ListView;
 
@@ -13,10 +13,7 @@ import com.android.volley.toolbox.Volley;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
-import api.GetSelectedRecipeData;
-import api.Ingredient;
 import api.Recipe;
 
 public class ShoppingActivity extends AppCompatActivity {
@@ -31,32 +28,36 @@ public class ShoppingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_shopping);
         Resources res = getResources();
-        List<Ingredient> ingredientsList = new LinkedList<Ingredient>();
+        List<String> ingredientsList = new LinkedList<>();
 
+        //Obtain the ingredients passed by recipesList
         if(getIntent().hasExtra("Ingredients")){
             ArrayList<String> temp = (ArrayList)getIntent().getExtras().getStringArrayList("Ingredients");
             for(String id : temp){
-                ingredientsList.add(new Ingredient(id));
+                ingredientsList.add(id);
             }
         }
 
-        adapter = new ShoppingListAdapter(getApplicationContext(), res, ingredientsList);
+
+        if(adapter == null){
+            adapter = new ShoppingListAdapter(ingredientsList, getApplicationContext());
+        }
+
         shoppingListView = (ListView)findViewById(R.id.shoppingList);
         shoppingListView.setAdapter(adapter);
 
 
-
-        //GetSelectedRecipeData.callIngredientsListAPI(shoppingList, queue, ShoppingListAdapter.ingredientList);
     }
 
 
-
+    /*
+    Callback mechanism to refresh the shopping list upon the return of the API call
+     */
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest>{
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request){
             adapter.notifyDataSetChanged();
             RecipesList.recipesListAdapter.notifyDataSetChanged();
         }
-
     }
 }

@@ -1,10 +1,10 @@
 package com.teamalpha.aichef.slideuppanel;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.Fragment;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,19 +24,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 import api.GetRecipeList;
-import api.Ingredient;
+
+import static com.teamalpha.aichef.slideuppanel.RecipeFragment.spinner;
 
 public class IngredientFragment extends Fragment {
 
-    public static List<Ingredient> scannedIngredients;
+    public static List<String> scannedIngredients;
     static IngredientAdapter adapter;
     static LinearLayout mEmptyView;
     RequestQueue mQueue;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
-        scannedIngredients = new ArrayList<>();
+        scannedIngredients = new ArrayList<String>();
         mQueue = Volley.newRequestQueue(getContext());
         mQueue.addRequestFinishedListener(new RecipeRequestFinishedListener());
     }
@@ -47,6 +49,7 @@ public class IngredientFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater,
                              @Nullable ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_slideup_ingredient, container, false);
 
         mEmptyView = view.findViewById(R.id.tv_empty_view_ingredient);
@@ -61,10 +64,13 @@ public class IngredientFragment extends Fragment {
 
         recyclerView.addItemDecoration(new SimpleDividerItemDecoration(getContext()));
 
+
         Button apiCallButton = view.findViewById(R.id.button_get_recipe);
         apiCallButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                spinner.setVisibility(View.VISIBLE);
+                RecipeFragment.refresh();
                 GetRecipeList.callRecipeListAPI(scannedIngredients, mQueue, RecipeFragment.recipes);
                 MainActivity.moveSlideUpPanel(1);
             }
@@ -86,7 +92,7 @@ public class IngredientFragment extends Fragment {
 
         @Override
         public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
-            final String msg = scannedIngredients.get(position).getName();
+            final String msg = scannedIngredients.get(position);
             ((IngredientViewHolder) holder).mTextView.setText(msg);
             ((IngredientViewHolder) holder).mImageView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -116,7 +122,7 @@ public class IngredientFragment extends Fragment {
         }
     }
 
-    static void refresh() {
+    static public void refresh() {
         adapter.notifyDataSetChanged();
         int visibility = (scannedIngredients.size() == 0) ? View.VISIBLE : View.GONE;
         mEmptyView.setVisibility(visibility);
@@ -129,6 +135,7 @@ public class IngredientFragment extends Fragment {
     private class RecipeRequestFinishedListener implements RequestQueue.RequestFinishedListener<JsonArrayRequest> {
         @Override
         public void onRequestFinished(Request<JsonArrayRequest> request) {
+            spinner.setVisibility(View.GONE);
             RecipeFragment.refresh();
         }
     }
