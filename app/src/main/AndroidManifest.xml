@@ -28,8 +28,12 @@
             <category android:name="android.intent.category.LAUNCHER" />
         </intent-filter>
         </activity>
-        <activity android:name=".ShoppingActivity"/>
-        <activity android:name=".RecipesList"/>
+        <activity
+            android:name=".ShoppingActivity"
+            android:theme="@style/TabAppTheme"/>
+        <activity
+            android:name=".RecipesList"
+            android:theme="@style/TabAppTheme"/>
     </application>
 
 </manifest>
