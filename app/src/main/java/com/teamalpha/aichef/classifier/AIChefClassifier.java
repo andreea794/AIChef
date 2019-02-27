@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.teamalpha.aichef.MainActivity;
 
@@ -38,10 +39,10 @@ import org.tensorflow.lite.Interpreter;
 
 public class AIChefClassifier implements Runnable {
 
-    private static final String MODEL_PATH = "graph3.mp3";
+    private static final String MODEL_PATH = "graph2.mp3";
     private static final String LABEL_PATH = "labels.mp3";
 
-    private static final float MIN_OBJ_CHANCE = 0.75f;
+    private static final float MIN_OBJ_CHANCE = 0.5f;
     private static final int INPUT_SIZE = 224;
 
     private int numClasses;
@@ -151,6 +152,7 @@ public class AIChefClassifier implements Runnable {
                 }
 
                 Log.i("AIChefClassifier", highestKey + " : " + highestProb);
+                //Toast.makeText(mainActivity, "Ingredient already in list", Toast.LENGTH_SHORT).show();
 
                 String classification = highestProb >= MIN_OBJ_CHANCE ? highestKey : "NOT FOUND";
 
