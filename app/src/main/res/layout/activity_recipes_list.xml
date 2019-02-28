@@ -7,6 +7,30 @@
     android:orientation="vertical"
     tools:context=".RecipesList">
 
+    <FrameLayout
+        android:id="@+id/menuBar"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight=".07"
+        android:background="@android:drawable/bottom_bar">
+
+        <Button
+            android:id="@+id/shoppingListButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:text="@string/shopping_list" />
+
+        <Button
+            android:id="@+id/cameraButton"
+            style="@style/Widget.AppCompat.Button.Borderless"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/camera"
+            android:textSize="14sp" />
+    </FrameLayout>
+
     <ListView
         android:id="@+id/recipesList"
         android:layout_width="match_parent"
@@ -15,17 +39,17 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_weight="10"
+        android:layout_weight=".93"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@id/menuBar"
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
         android:id="@+id/spawnIngredientsList"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
+        android:layout_weight=".10"
         android:text="Tell me what to buy!"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"

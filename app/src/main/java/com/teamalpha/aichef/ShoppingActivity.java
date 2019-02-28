@@ -3,6 +3,8 @@ package com.teamalpha.aichef;
 import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.android.volley.Request;
@@ -23,6 +25,21 @@ public class ShoppingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        Button mCameraButton = findViewById(R.id.cameraButton);
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        Button mRecipesListButton = findViewById(R.id.shoppingListButton);
+        mRecipesListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+
         final RequestQueue queue = Volley.newRequestQueue(this);
         queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
         super.onCreate(savedInstanceState);
