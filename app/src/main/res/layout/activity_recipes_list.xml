@@ -11,7 +11,7 @@
         android:id="@+id/menuBar"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight=".07"
+        android:layout_weight=".06"
         android:background="@android:drawable/bottom_bar">
 
         <Button
@@ -39,7 +39,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginRight="8dp"
-        android:layout_weight=".93"
+        android:layout_weight=".84"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toEndOf="@id/menuBar"

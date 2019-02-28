@@ -25,21 +25,6 @@ public class ShoppingActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        Button mCameraButton = findViewById(R.id.cameraButton);
-        mCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        Button mRecipesListButton = findViewById(R.id.shoppingListButton);
-        mRecipesListButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-
         final RequestQueue queue = Volley.newRequestQueue(this);
         queue.addRequestFinishedListener(new RecipeRequestFinishedListener());
         super.onCreate(savedInstanceState);
@@ -63,7 +48,20 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingListView = (ListView)findViewById(R.id.shoppingList);
         shoppingListView.setAdapter(adapter);
 
+        Button mCameraButton = findViewById(R.id.cameraButton);
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+            }
+        });
+        Button mRecipesListButton = findViewById(R.id.recipesListButton);
+        mRecipesListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
 

@@ -35,6 +35,16 @@ public class RecipesList extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         //List<Recipe> recipesList;
+
+        final RequestQueue queue = Volley.newRequestQueue(this);
+        RecipeRequestFinishedListener listener = new RecipeRequestFinishedListener();
+        listener.setQueue(queue);
+        queue.addRequestFinishedListener(listener);
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_recipes_list);
+        Resources res = getResources();
+//        ingredientList = new LinkedList<Ingredient>();
+
         Button mCameraButton = findViewById(R.id.cameraButton);
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,15 +59,6 @@ public class RecipesList extends AppCompatActivity {
 
             }
         });
-
-        final RequestQueue queue = Volley.newRequestQueue(this);
-        RecipeRequestFinishedListener listener = new RecipeRequestFinishedListener();
-        listener.setQueue(queue);
-        queue.addRequestFinishedListener(listener);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_recipes_list);
-        Resources res = getResources();
-//        ingredientList = new LinkedList<Ingredient>();
 
         /**
          * attach the current recipe list to its adapter
