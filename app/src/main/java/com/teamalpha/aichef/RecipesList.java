@@ -49,7 +49,7 @@ public class RecipesList extends AppCompatActivity {
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onBackPressed();
             }
         });
         Button mShoppingListButton = findViewById(R.id.shoppingListButton);
