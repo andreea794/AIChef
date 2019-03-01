@@ -1,48 +1,31 @@
 package com.teamalpha.aichef.classifier;
 
-import android.app.Activity;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.res.AssetFileDescriptor;
 import android.content.res.AssetManager;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
-import android.view.ViewGroup;
-import android.view.Window;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.teamalpha.aichef.MainActivity;
 
+import org.tensorflow.lite.Interpreter;
+
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.logging.Logger;
-
-import org.tensorflow.lite.Interpreter;
 
 public class AIChefClassifier implements Runnable {
 
     private static final String MODEL_PATH = "graph2.mp3";
     private static final String LABEL_PATH = "labels.mp3";
 
-    private static final float MIN_OBJ_CHANCE = 0.5f;
+    private static final float MIN_OBJ_CHANCE = 0.3f;
     private static final int INPUT_SIZE = 224;
 
     private int numClasses;
@@ -215,8 +198,13 @@ public class AIChefClassifier implements Runnable {
         for(int x = 0; x < minDim; x++) {
             for(int y = 0; y < minDim; y++) {
                 int r = (int) croppedImage[x][y][0];
+
                 int g = (int) croppedImage[x][y][1];
                 int b = (int) croppedImage[x][y][2];
+
+                if(r < 0) r += 255;
+                if(g < 0) g += 255;
+                if(b < 0) b += 255;
 
                 img.setPixel(x, y, (0xff << 24)
                                     | (r << 16)
@@ -271,7 +259,6 @@ public class AIChefClassifier implements Runnable {
 
 
 
-
         // Run network
 
         float[][] output = new float[1][numClasses];
@@ -282,6 +269,7 @@ public class AIChefClassifier implements Runnable {
         HashMap<String, Float> classProbs = new HashMap<>();
         for(int i = 0; i < numClasses; i++)
             classProbs.put(classNames[i], output[0][i]);
+
 
         return classProbs;
     }
