@@ -2,6 +2,7 @@
     <string name="app_name">AIChef</string>
     <string name="recipes_list">RECIPES LIST</string>
     <string name="shopping_list">SHOPPING LIST</string>
+    <string name="camera">CAMERA</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
 

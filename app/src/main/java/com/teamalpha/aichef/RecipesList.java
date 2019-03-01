@@ -22,7 +22,6 @@ import api.Recipe;
 
 public class RecipesList extends AppCompatActivity {
     ListView recipesListView;
-    //List<Recipe> recipesList;
 
     static List<String> ingredientList = new LinkedList<String>();
     static RecipesListAdapter recipesListAdapter;
@@ -35,6 +34,8 @@ public class RecipesList extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //List<Recipe> recipesList;
+
         final RequestQueue queue = Volley.newRequestQueue(this);
         RecipeRequestFinishedListener listener = new RecipeRequestFinishedListener();
         listener.setQueue(queue);
@@ -43,6 +44,21 @@ public class RecipesList extends AppCompatActivity {
         setContentView(R.layout.activity_recipes_list);
         Resources res = getResources();
 //        ingredientList = new LinkedList<Ingredient>();
+
+        Button mCameraButton = findViewById(R.id.cameraButton);
+        mCameraButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
+        Button mShoppingListButton = findViewById(R.id.shoppingListButton);
+        mShoppingListButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
 
         /**
          * attach the current recipe list to its adapter

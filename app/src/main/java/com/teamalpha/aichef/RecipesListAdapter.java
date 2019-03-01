@@ -169,6 +169,7 @@ public class RecipesListAdapter extends BaseAdapter {
 
                 Intent i = new Intent(Intent.ACTION_VIEW,
                         Uri.parse(url));
+                i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 c.startActivity(i);
             }
         });
