@@ -52,14 +52,14 @@ public class ShoppingActivity extends AppCompatActivity {
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onBackPressed();
             }
         });
         Button mRecipesListButton = findViewById(R.id.recipesListButton);
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                onBackPressed();
+
             }
         });
     }
