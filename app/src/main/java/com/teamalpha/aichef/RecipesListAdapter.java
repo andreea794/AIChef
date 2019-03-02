@@ -137,6 +137,7 @@ public class RecipesListAdapter extends BaseAdapter {
                             }
                             in.close();
                             out.close();
+
                             
 
                             new ReceiverThread().run();
