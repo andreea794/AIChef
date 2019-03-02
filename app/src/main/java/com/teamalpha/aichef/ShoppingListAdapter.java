@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.CheckedTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -54,6 +55,21 @@ public class ShoppingListAdapter extends BaseAdapter {
         String ingredient = ingredientList.get(i);
         final TextView recipeText = (CheckedTextView)v.findViewById(R.id.ingredientText);
         recipeText.setText(ingredient);
+
+        final ImageView checked = (ImageView)v.findViewById(R.id.shopping_checked);
+        recipeText.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //toggle visibilities of the checked icon of each shopping list item
+                int visibility = checked.getVisibility();
+                if(visibility == View.INVISIBLE){
+                    checked.setVisibility(View.VISIBLE);
+                }
+                else{
+                    checked.setVisibility(View.INVISIBLE);
+                }
+            }
+        });
 
         return v;
     }

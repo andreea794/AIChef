@@ -133,6 +133,9 @@ public class RecipesListAdapter extends BaseAdapter {
                             }
                             in.close();
                             out.close();
+
+                            //problematic bit, generates error messages but no visible
+                            //errors
                             notifyDataSetChanged();
                         }
                         catch(Exception e){
@@ -174,35 +177,6 @@ public class RecipesListAdapter extends BaseAdapter {
             }
         });
 
-
-        //LEFT OUT FOR NOW
-//        recipeImg.setImageResource(recipe.getRecipeImageRes());
-        //make sure recipe is consistent with Current View as determined
-        //recipeText.setChecked(checkedRecipes.get(i));
-//        if(recipeText.isChecked()){
-//            recipeText.setCheckMarkDrawable(R.drawable.checked);
-//        }
-//        else{
-//            recipeText.setCheckMarkDrawable(0);
-//        }
-//        //by checkedRecipes
-//        recipeText.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                if(checkedRecipes.get(i)){
-//                    recipeText.setCheckMarkDrawable(0);
-//                    recipeText.setChecked(false);
-//                    checkedRecipes.set(i, false);
-//                    pickedRecipeNames.remove(recipesList.get(i)); //remove from pickedRecipes
-//                }
-//                else {
-//                    recipeText.setCheckMarkDrawable(R.drawable.checked);
-//                    recipeText.setChecked(true);
-//                    checkedRecipes.set(i, true);
-//                    pickedRecipeNames.add(recipesList.get(i)); //add to pickedRecipes
-//                }
-//            }
-//        });
         return v;
     }
 }

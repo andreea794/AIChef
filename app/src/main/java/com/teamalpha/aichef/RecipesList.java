@@ -43,7 +43,7 @@ public class RecipesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
         Resources res = getResources();
-//        ingredientList = new LinkedList<Ingredient>();
+
 
         Button mCameraButton = findViewById(R.id.cameraButton);
         mCameraButton.setOnClickListener(new View.OnClickListener() {

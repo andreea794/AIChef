@@ -41,7 +41,7 @@ public class ShoppingActivity extends AppCompatActivity {
             }
         }
 
-
+        //create adapters
         if(adapter == null){
             adapter = new ShoppingListAdapter(ingredientsList, getApplicationContext());
         }
