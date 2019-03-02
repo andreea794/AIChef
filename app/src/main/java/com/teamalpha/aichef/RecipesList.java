@@ -65,7 +65,7 @@ public class RecipesList extends AppCompatActivity {
          * attach the current recipe list to its adapter
          */
         recipesListView = (ListView)findViewById(R.id.recipesList);
-        recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
+        recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res, this);
         recipesListView.setAdapter(recipesListAdapter);
 
         /**

@@ -1,5 +1,6 @@
 package com.teamalpha.aichef;
 
+import android.app.DownloadManager;
 import android.content.Context;
 import android.content.ContextWrapper;
 import android.content.Intent;
@@ -8,6 +9,7 @@ import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,13 +45,15 @@ public class RecipesListAdapter extends BaseAdapter {
     static List<Boolean> checkedRecipes;
     private List<Recipe> pickedRecipeNames;
     ExecutorService executor;
+    RecipesList parent;
 
 
     public List<Recipe> getPickedRecipeNames(){
         return pickedRecipeNames;
     }
 
-    public RecipesListAdapter(Context c, Resources res){
+    public RecipesListAdapter(Context c, Resources res, RecipesList parent){
+        this.parent = parent;
         this.c = c;
         this.mInflater = (LayoutInflater)c.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         this.res = res;
@@ -133,10 +137,9 @@ public class RecipesListAdapter extends BaseAdapter {
                             }
                             in.close();
                             out.close();
+                            
 
-                            //problematic bit, generates error messages but no visible
-                            //errors
-                            notifyDataSetChanged();
+                            new ReceiverThread().run();
                         }
                         catch(Exception e){
                             e.printStackTrace();
@@ -150,6 +153,7 @@ public class RecipesListAdapter extends BaseAdapter {
         }
         Bitmap myBitmap = BitmapFactory.decodeFile(imgFile.getAbsolutePath());
         recipeImg.setImageBitmap(myBitmap);
+
         recipeText.setText(recipesList.get(i).getRecipeName());
         final String url = recipe.getRecipeURL();
         Button moreButton = (Button)v.findViewById(R.id.moreButton);
@@ -178,5 +182,18 @@ public class RecipesListAdapter extends BaseAdapter {
         });
 
         return v;
+    }
+
+    private class ReceiverThread extends Thread{
+        @Override
+        public void run(){
+            parent.runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    parent.recipesListAdapter.notifyDataSetChanged();
+                }
+            });
+        }
+
     }
 }

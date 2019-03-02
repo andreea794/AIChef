@@ -15,7 +15,8 @@
         android:gravity="center_vertical"
         android:paddingLeft="15dp"
         android:text=""
-        android:textColor="#000" />
+        android:textColor="#000"
+        android:textSize="24sp" />
 
     <ImageView
         android:id="@+id/shopping_checked"

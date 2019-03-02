@@ -26,7 +26,7 @@ public class GetRecipeList {
 //    //only get the JSON response in this part and deal with it in the main activity
 //    public static void setRequestQueue(RequestQueue queue){
 //        mQueue = queue;
-//    }
+
 
     /**
      * Populate the recipe list with information in the JSON response.
