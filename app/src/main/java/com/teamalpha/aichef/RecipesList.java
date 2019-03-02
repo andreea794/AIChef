@@ -56,7 +56,8 @@ public class RecipesList extends AppCompatActivity {
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(RecipesList.this, ShoppingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -86,10 +87,10 @@ public class RecipesList extends AppCompatActivity {
             if (RecipesListAdapter.recipesList.size() == 0) {
                 List<Recipe> recipeList = new LinkedList<Recipe>();
                 //test data
-                recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
-                recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
+                //recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
+                //recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
                 RecipesListAdapter.recipesList = recipeList;
-                GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, RecipesList.ingredientList);
+                //GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, RecipesList.ingredientList);
             }
         }
 

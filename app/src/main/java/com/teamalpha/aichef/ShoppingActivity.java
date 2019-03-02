@@ -1,5 +1,6 @@
 package com.teamalpha.aichef;
 
+import android.content.Intent;
 import android.content.res.Resources;
 import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
@@ -59,7 +60,8 @@ public class ShoppingActivity extends AppCompatActivity {
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(ShoppingActivity.this, RecipesList.class);
+                startActivity(intent);
             }
         });
     }

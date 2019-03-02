@@ -15,10 +15,13 @@ import androidx.fragment.app.FragmentPagerAdapter;
 import androidx.core.content.ContextCompat;
 import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
+
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ProgressBar;
 import android.widget.SearchView;
 import android.widget.Toast;
 
@@ -40,10 +43,9 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     private boolean isPaused = false; // whether the preview is paused
     private FrameLayout mCamFrame = null;
     private static final int CAMERA_REQUEST_ID = 1;
-    private Button mShoppingListButton;
-    private Button mRecipesListButton;
     private AIChefClassifier imageClassifier = null;
-
+    private ProgressBar mSpinner = null;
+    private boolean canScan = false;
 
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN_MR1)
     @Override
@@ -103,7 +105,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             }
         });
 
-        mShoppingListButton = findViewById(R.id.shoppingListButton);
+        final Button mShoppingListButton = findViewById(R.id.shoppingListButton);
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,12 +114,32 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             }
         });
 
-        mRecipesListButton = findViewById(R.id.recipesListButton);
+        Button mRecipesListButton = findViewById(R.id.recipesListButton);
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, RecipesList.class);
                 startActivity(intent);
+            }
+        });
+
+        mSpinner = findViewById(R.id.spinner);
+
+        Button mCameraButton = findViewById(R.id.cameraButton);
+        mCameraButton.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View view, MotionEvent motionEvent) {
+                if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
+                    // Start scanning
+                    canScan = true;
+                    mSpinner.setVisibility(View.VISIBLE);
+                }
+                if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
+                        // Stop scanning
+                        canScan = false;
+                        mSpinner.setVisibility(View.GONE);
+                }
+                return true;
             }
         });
 
@@ -163,6 +185,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
         mCamFrame.addView(mPreview);
 
         mSearchView.bringToFront();
+        mSpinner.bringToFront();
     }
 
     private void askCameraPermission() {
@@ -224,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
     @Override
     public void onPreviewUpdated(Bitmap data, int width, int height) {
         if (data != null) {
-            if (imageClassifier.canAcceptImage()) {
+            if (canScan && imageClassifier.canAcceptImage()) {
                 imageClassifier.classify(data, getBaseContext(), this);
             }
         }
@@ -305,7 +328,5 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
                     pauseOrResumeCamera();
         }
     }
-
-
 }
 
