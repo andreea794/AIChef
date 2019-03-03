@@ -175,7 +175,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
     @Override
     public void onPreviewFrame(byte[] data, Camera camera) {
         long now = System.currentTimeMillis();
-        if (now - lastFrameTaken >= 1000) {
+        if (now - lastFrameTaken >= 500) {
             aIn.copyFrom(data);
             yuvToRgbIntrinsic.forEach(aOut);
             aOut.copyTo(bmpout);

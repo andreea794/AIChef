@@ -130,12 +130,12 @@ public class MainActivity extends AppCompatActivity implements CameraPreview.Pre
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 if(motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
-                    // Start scanning
+                    // Start scanning on button held
                     canScan = true;
                     mSpinner.setVisibility(View.VISIBLE);
                 }
                 if (motionEvent.getAction() == MotionEvent.ACTION_UP) {
-                        // Stop scanning
+                        // Stop scanning on release of button
                         canScan = false;
                         mSpinner.setVisibility(View.GONE);
                 }
