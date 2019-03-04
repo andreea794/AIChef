@@ -257,7 +257,7 @@ public class AIChefClassifier implements Runnable {
 
             }
         }
-        
+
 
 
         // Run network
