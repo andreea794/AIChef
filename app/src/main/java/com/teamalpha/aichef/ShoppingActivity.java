@@ -49,13 +49,13 @@ public class ShoppingActivity extends AppCompatActivity {
         shoppingListView = (ListView)findViewById(R.id.shoppingList);
         shoppingListView.setAdapter(adapter);
 
-        Button mCameraButton = findViewById(R.id.cameraButton);
-        mCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+//        Button mCameraButton = findViewById(R.id.cameraButton);
+//        mCameraButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onBackPressed();
+//            }
+//        });
         Button mRecipesListButton = findViewById(R.id.recipesListButton);
         mRecipesListButton.setOnClickListener(new View.OnClickListener() {
             @Override

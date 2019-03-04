@@ -22,13 +22,13 @@
             android:layout_gravity="end"
             android:text="@string/shopping_list" />
 
-        <Button
-            android:id="@+id/cameraButton"
-            style="@style/Widget.AppCompat.Button.Borderless"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/camera"
-            android:textSize="14sp" />
+        <!--<Button-->
+            <!--android:id="@+id/cameraButton"-->
+            <!--style="@style/Widget.AppCompat.Button.Borderless"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="@string/camera"-->
+            <!--android:textSize="14sp" />-->
     </FrameLayout>
 
     <ListView
