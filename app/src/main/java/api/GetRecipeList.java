@@ -13,8 +13,10 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class GetRecipeList {
     private static JSONArray responseArr;
@@ -52,6 +54,8 @@ public class GetRecipeList {
                     @Override
                     public void onResponse(JSONArray response) {
 
+                        Set<String> recipes = new HashSet<>();
+
                         responseArr = response;
                         System.out.println("BREAKPOINT 2");
 
@@ -59,9 +63,14 @@ public class GetRecipeList {
                         for (index = 0; index < responseArr.length(); index++) {
                             try {
                                 JSONObject curRJObj = responseArr.getJSONObject(index);
-//                                System.out.println(curRJObj.toString());
-                                Recipe curRecipe = new Recipe(curRJObj.getString("title"), curRJObj.getString("id"), curRJObj.getString("image"));
-                                mRecipeList.add(curRecipe);
+                                String curRecipeTitle =  curRJObj.getString("title");
+                                if (!recipes.contains(curRecipeTitle)) {
+                                    recipes.add(curRecipeTitle);
+                                    System.out.println(curRecipeTitle);
+                                    Recipe curRecipe = new Recipe(curRecipeTitle, curRJObj.getString("id"), curRJObj.getString("image"));
+                                    mRecipeList.add(curRecipe);
+                                }
+
                                 //add in the ingredient list in the later functions which will then be called by the recipe-list UI
                             } catch (JSONException e) {
                                 e.printStackTrace();
