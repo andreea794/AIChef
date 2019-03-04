@@ -43,20 +43,21 @@ public class RecipesList extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipes_list);
         Resources res = getResources();
-//        ingredientList = new LinkedList<Ingredient>();
+
 
         Button mCameraButton = findViewById(R.id.cameraButton);
         mCameraButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                onBackPressed();
             }
         });
         Button mShoppingListButton = findViewById(R.id.shoppingListButton);
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(RecipesList.this, ShoppingActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -64,7 +65,7 @@ public class RecipesList extends AppCompatActivity {
          * attach the current recipe list to its adapter
          */
         recipesListView = (ListView)findViewById(R.id.recipesList);
-        recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res);
+        recipesListAdapter = new RecipesListAdapter(getApplicationContext(), res, this);
         recipesListView.setAdapter(recipesListAdapter);
 
         /**
@@ -86,10 +87,10 @@ public class RecipesList extends AppCompatActivity {
             if (RecipesListAdapter.recipesList.size() == 0) {
                 List<Recipe> recipeList = new LinkedList<Recipe>();
                 //test data
-                recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
-                recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
+                //recipeList.add(new Recipe("Cinnamon Sugar Fried Apples", "639487", "https://spoonacular.com/recipeImages/Cinnamon-Sugar-Fried-Apples-639487.jpg"));
+                //recipeList.add(new Recipe("Quick Apple Ginger Pie", "657563", "https://spoonacular.com/recipeImages/Quick-Apple-Ginger-Pie-657563.jpg"));
                 RecipesListAdapter.recipesList = recipeList;
-                GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, RecipesList.ingredientList);
+                //GetSelectedRecipeData.callIngredientsListAPI(recipeList, queue, RecipesList.ingredientList);
             }
         }
 
