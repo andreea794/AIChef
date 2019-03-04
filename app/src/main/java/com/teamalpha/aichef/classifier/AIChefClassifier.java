@@ -25,7 +25,7 @@ public class AIChefClassifier implements Runnable {
     private static final String MODEL_PATH = "graph4.mp3";
     private static final String LABEL_PATH = "labels2.mp3";
 
-    private static final float MIN_OBJ_CHANCE = 0.3f;
+    private static final float MIN_OBJ_CHANCE = 0.45f;
     private static final int INPUT_SIZE = 224;
 
     private int numClasses;
