@@ -22,8 +22,8 @@ import java.util.List;
 
 public class AIChefClassifier implements Runnable {
 
-    private static final String MODEL_PATH = "graph2.mp3";
-    private static final String LABEL_PATH = "labels.mp3";
+    private static final String MODEL_PATH = "graph4.mp3";
+    private static final String LABEL_PATH = "labels2.mp3";
 
     private static final float MIN_OBJ_CHANCE = 0.3f;
     private static final int INPUT_SIZE = 224;
@@ -247,6 +247,8 @@ public class AIChefClassifier implements Runnable {
 //            Log.e("AIChefClassifier", "Error saving img");
 //        }
 
+        String s = "";
+
         float[][][][] inputImage = new float[1][INPUT_SIZE][INPUT_SIZE][3];
         for(int x = 0; x < INPUT_SIZE; x++) {
             for(int y = 0; y < INPUT_SIZE; y++) {
@@ -254,8 +256,12 @@ public class AIChefClassifier implements Runnable {
                 inputImage[0][x][y][0] = ((pixel >> 16) & 0xff) / 255f;
                 inputImage[0][x][y][1] = ((pixel >> 8) & 0xff) / 255f;
                 inputImage[0][x][y][2] = ((pixel >> 0) & 0xff) / 255f;
+
+                s += x + " " + y + " " + pixel + "\n";
             }
         }
+
+        Log.i("AIChefClassifier", s);
 
 
 
