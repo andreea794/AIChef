@@ -45,13 +45,13 @@ public class RecipesList extends AppCompatActivity {
         Resources res = getResources();
 
 
-        Button mCameraButton = findViewById(R.id.cameraButton);
-        mCameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                onBackPressed();
-            }
-        });
+//        Button mCameraButton = findViewById(R.id.cameraButton);
+//        mCameraButton.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//                onBackPressed();
+//            }
+//        });
         Button mShoppingListButton = findViewById(R.id.shoppingListButton);
         mShoppingListButton.setOnClickListener(new View.OnClickListener() {
             @Override
