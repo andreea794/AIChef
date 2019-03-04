@@ -66,7 +66,6 @@ public class GetRecipeList {
                                 String curRecipeTitle =  curRJObj.getString("title");
                                 if (!recipes.contains(curRecipeTitle)) {
                                     recipes.add(curRecipeTitle);
-                                    System.out.println(curRecipeTitle);
                                     Recipe curRecipe = new Recipe(curRecipeTitle, curRJObj.getString("id"), curRJObj.getString("image"));
                                     mRecipeList.add(curRecipe);
                                 }
