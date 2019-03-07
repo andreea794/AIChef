@@ -31,7 +31,7 @@ public class GetSelectedRecipeData {
     public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<String> shoppingList) {
         counter = -1;
         final Set<String> allIngredients = new HashSet<>();
-
+        shoppingList.clear();
         for(int i=0; i<selectedRecipes.size(); i++) {
 
             String id = selectedRecipes.get(i).getRecipeID();
@@ -63,10 +63,10 @@ public class GetSelectedRecipeData {
                             }
                             //check whether it's the last api call
                             counter ++;
-                            if(counter == 0) {
-                                shoppingList.clear();
-                            }
-                            else if(counter == selectedRecipes.size()-1) {
+//                            if(counter == 0) {
+//                                shoppingList.clear();
+//                            }
+                            if(counter == selectedRecipes.size()-1) {
                                 shoppingList.addAll(allIngredients);
 //                                System.out.println("ShoppingList Size after reaching the last : " + allIngredients.size());
                             }
