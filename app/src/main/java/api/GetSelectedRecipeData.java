@@ -28,7 +28,7 @@ public class GetSelectedRecipeData {
 
     //info of ingredients of the currently chosen recipe is shown upon clicking that particular recipes
 
-    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<String> shoppingList) {
+    public static void callIngredientsListAPI(final List<Recipe> selectedRecipes, RequestQueue queue, final List<String> shoppingList, final String key) {
         counter = -1;
         final Set<String> allIngredients = new HashSet<>();
         shoppingList.clear();
@@ -88,7 +88,7 @@ public class GetSelectedRecipeData {
                 public Map<String, String> getHeaders() throws AuthFailureError {
                     HashMap<String, String> headers = new HashMap<String, String>();
                     //headers.put("Content-Type", "application/json");
-                    headers.put("X-RapidAPI-Key", "d5b6945f4amshcf5e58babc52c8cp1930c0jsn329275235e32");
+                    headers.put("X-RapidAPI-Key", key);
                     return headers;
                 }
             };

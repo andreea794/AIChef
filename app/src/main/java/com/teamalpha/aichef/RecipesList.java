@@ -81,7 +81,7 @@ public class RecipesList extends AppCompatActivity {
             }
             RecipesListAdapter.recipesList = result;
             System.out.println("Ingredient list before API call: " + RecipesList.ingredientList);
-            GetSelectedRecipeData.callIngredientsListAPI(RecipesListAdapter.recipesList, queue, RecipesList.ingredientList);
+            GetSelectedRecipeData.callIngredientsListAPI(RecipesListAdapter.recipesList, queue, RecipesList.ingredientList, getResources().getString(R.string.API_KEY));
         }
         else{
             if (RecipesListAdapter.recipesList.size() == 0) {

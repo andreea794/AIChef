@@ -71,7 +71,7 @@ public class IngredientFragment extends Fragment {
             public void onClick(View view) {
                 spinner.setVisibility(View.VISIBLE);
                 RecipeFragment.refresh();
-                GetRecipeList.callRecipeListAPI(scannedIngredients, mQueue, RecipeFragment.recipes);
+                GetRecipeList.callRecipeListAPI(scannedIngredients, mQueue, RecipeFragment.recipes, getResources().getString(R.string.API_KEY));
                 MainActivity.moveSlideUpPanel(1);
             }
         });

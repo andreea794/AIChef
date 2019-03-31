@@ -37,7 +37,7 @@ public class GetRecipeList {
      * @param mQueue             the RequestQueue of the calling Context
      * @param recipeList         the recipe list to be populated with recipe data managed by the calling context
      */
-    public static void callRecipeListAPI(List<String> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList) {
+    public static void callRecipeListAPI(List<String> scannedIngredients, RequestQueue mQueue, final List<Recipe> recipeList, final String key) {
         //need to have some way to pass the name from the scannedIngredients to the url
         final List<Recipe> mRecipeList = new ArrayList<>();
 
@@ -98,7 +98,7 @@ public class GetRecipeList {
             public Map<String, String> getHeaders() throws AuthFailureError {
                 HashMap<String, String> headers = new HashMap<String, String>();
                 //headers.put("Content-Type", "application/json");
-                headers.put("X-RapidAPI-Key", "d5b6945f4amshcf5e58babc52c8cp1930c0jsn329275235e32");
+                headers.put("X-RapidAPI-Key", key);
                 return headers;
             }
         };
